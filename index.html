@@ -4,164 +4,1201 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ms. Varsha Shobha Bhausahed Badwar | Teacher Portfolio</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
 <style>
-:root{--navy:#12324f;--teal:#0f766e;--gold:#c99a2e;--cream:#fbf7f0;--ink:#1f2937;--muted:#6b7280;--radius:18px;--shadow:0 18px 45px rgba(18,50,79,.10)}
-*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
-body{font-family:Inter,Arial,sans-serif;background:var(--cream);color:var(--ink);line-height:1.6}
-h1,h2,h3,.logo{font-family:"Playfair Display",Georgia,serif}
-.container{max-width:1150px;margin:auto;padding:0 22px}
-.topbar{background:var(--navy);color:#e7eef5;font-size:.9rem}
-.topbar-inner{display:flex;justify-content:space-between;gap:14px;padding:10px 0;flex-wrap:wrap;align-items:center}
-.lang{display:flex;gap:8px}
-.lang button{background:transparent;border:1px solid rgba(255,255,255,.35);color:#fff;padding:6px 13px;border-radius:999px;cursor:pointer;font-weight:600}
-.lang button:hover{background:var(--gold);border-color:var(--gold);color:var(--navy)}
-.nav{background:rgba(255,255,255,.97);backdrop-filter:blur(8px);position:sticky;top:0;z-index:40;border-bottom:1px solid #e5e0d6}
-.nav-inner{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:14px 0;flex-wrap:wrap}
-.logo{font-size:1.15rem;color:var(--navy);font-weight:700}
-.menu{display:flex;gap:22px;flex-wrap:wrap}
-.menu a{text-decoration:none;color:var(--ink);font-weight:600;font-size:.95rem}
-.menu a:hover{color:var(--teal)}
-.hero{background:linear-gradient(120deg,var(--navy) 0%,#17496b 55%,var(--teal) 100%);color:#fff;padding:80px 0 70px;text-align:center;position:relative;overflow:hidden}
-.hero::before{content:"";position:absolute;left:-140px;top:-140px;width:360px;height:360px;border-radius:50%;background:rgba(201,154,46,.16)}
-.hero::after{content:"";position:absolute;right:-140px;bottom:-160px;width:380px;height:380px;border-radius:50%;background:rgba(255,255,255,.07)}
-.hero-centered{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center}
-.hero-photo-circle{position:relative;width:190px;height:190px;margin-bottom:26px}
-.hero-photo-circle img{width:100%;height:100%;object-fit:cover;border-radius:50%;border:6px solid rgba(255,255,255,.85);box-shadow:0 20px 45px rgba(0,0,0,.25)}
-.photo-ring{position:absolute;inset:-14px;border:2px dashed rgba(201,154,46,.75);border-radius:50%}
-.eyebrow{color:var(--gold);font-weight:700;letter-spacing:.14em;text-transform:uppercase;font-size:.78rem}
-.hero-eyebrow{color:#f3cf7b;margin-bottom:12px}
-.hero-name{font-size:3.1rem;line-height:1.08;margin-bottom:8px;color:#fff}
-.hero-name-marathi{font-family:"Playfair Display",Georgia,serif;font-size:1.5rem;color:#f3cf7b;margin-bottom:16px}
-.hero-subtitle{max-width:620px;color:#dbe7ef;font-size:1.08rem;margin-bottom:28px}
-.hero-actions{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:46px}
-.btn{display:inline-block;padding:13px 24px;border-radius:999px;text-decoration:none;font-weight:700;transition:.2s}
-.btn-gold{background:var(--gold);color:var(--navy)}
-.btn-gold:hover{transform:translateY(-2px)}
-.btn-outline{border:1.5px solid rgba(255,255,255,.55);color:#fff}
-.btn-outline:hover{background:#fff;color:var(--navy)}
-.hero-stats{display:grid;grid-template-columns:repeat(4,minmax(120px,1fr));gap:14px;width:100%;max-width:760px;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.16);border-radius:var(--radius);padding:22px;backdrop-filter:blur(6px)}
-.hero-stats div{text-align:center}
-.hero-stats strong{display:block;font-family:"Playfair Display",Georgia,serif;font-size:1.7rem;color:#f3cf7b}
-.hero-stats span{font-size:.85rem;color:#dbe7ef}
-section{padding:72px 0}
-.section-head{text-align:center;max-width:680px;margin:0 auto 42px}
-.section-head h2{font-size:2.15rem;color:var(--navy);margin:8px 0 10px}
-.section-head p{color:var(--muted)}
-.card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow)}
-.about-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:40px;align-items:center}
-.about-photo img{width:100%;height:430px;object-fit:cover;border-radius:var(--radius)}
-.about-content h3{font-size:1.7rem;color:var(--navy);margin-bottom:12px}
-.about-content p{color:#4b5563;margin-bottom:14px}
-.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
-.tag{background:#eef7f5;color:var(--teal);padding:7px 14px;border-radius:999px;font-size:.85rem;font-weight:600}
-.timeline{position:relative;max-width:760px;margin:auto}
-.timeline::before{content:"";position:absolute;left:19px;top:6px;bottom:6px;width:3px;background:#e3d9c6}
-.timeline-item{position:relative;padding-left:62px;margin-bottom:26px}
-.timeline-dot{position:absolute;left:8px;top:20px;width:25px;height:25px;border-radius:50%;background:var(--gold);border:5px solid var(--cream)}
-.timeline-card{padding:22px 24px}
-.timeline-card .year{color:var(--gold);font-weight:700;font-size:.85rem;letter-spacing:.08em}
-.timeline-card h3{color:var(--navy);margin:5px 0 7px}
-.timeline-card p{color:var(--muted)}
-.gallery-toolbar{display:flex;flex-direction:column;gap:16px;align-items:center;margin-bottom:18px}
-.filter-group{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
-.filter-chip{padding:9px 18px;border:1px solid #d8d0c0;background:#fff;color:var(--ink);border-radius:999px;font-weight:600;font-size:.9rem;cursor:pointer;transition:.2s}
-.filter-chip:hover{border-color:var(--teal);color:var(--teal)}
-.filter-chip.active{background:var(--navy);border-color:var(--navy);color:#fff}
-.search-box{width:100%;max-width:430px}
-.search-box input{width:100%;padding:13px 18px;border:1px solid #d8d0c0;border-radius:999px;font-size:.95rem;background:#fff}
-.gallery-count{text-align:center;color:var(--muted);font-size:.9rem;margin-bottom:24px}
-.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:22px}
-.photo-card{position:relative;border-radius:var(--radius);overflow:hidden;cursor:pointer;background:#fff;box-shadow:var(--shadow);transition:.25s}
-.photo-card:hover{transform:translateY(-6px);box-shadow:0 24px 55px rgba(18,50,79,.16)}
-.photo-frame{position:relative;aspect-ratio:4/3;overflow:hidden}
-.photo-frame img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease}
-.photo-card:hover .photo-frame img{transform:scale(1.06)}
-.photo-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(18,50,79,.88),rgba(18,50,79,.05));color:#fff;display:flex;align-items:flex-end;padding:18px;opacity:0;transition:.25s}
-.photo-card:hover .photo-overlay{opacity:1}
-.photo-overlay h3{font-size:1.05rem;margin-bottom:4px}
-.photo-overlay p{font-size:.82rem;opacity:.85}
-.photo-details{padding:16px 18px 18px}
-.photo-details h3{font-size:1.05rem;color:var(--navy);margin-bottom:6px}
-.photo-details p{color:var(--muted);font-size:.88rem}
-.badge{display:inline-block;background:#fdf3dd;color:#8a6516;font-size:.72rem;font-weight:700;padding:4px 10px;border-radius:999px;margin-bottom:8px}
-.empty-state{text-align:center;background:#fff;padding:48px 20px;border-radius:var(--radius);box-shadow:var(--shadow)}
-.empty-state h3{color:var(--navy);margin-bottom:6px}
-.contact{background:var(--navy);color:#fff}
-.contact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.contact-card{background:rgba(255,255,255,.08);padding:26px;border-radius:var(--radius);text-align:center}
-.contact-card strong{display:block;margin-bottom:6px;color:var(--gold)}
-footer{background:#0c2539;color:#9fb3c4;text-align:center;padding:24px}
-.lightbox{position:fixed;inset:0;background:rgba(9,25,39,.9);display:none;align-items:center;justify-content:center;padding:22px;z-index:100}
-.lightbox.open{display:flex}
-.lightbox-inner{background:#fff;max-width:940px;width:100%;max-height:90vh;border-radius:var(--radius);overflow:auto;display:grid;grid-template-columns:1.15fr .85fr}
-.lightbox img{width:100%;height:100%;object-fit:cover;min-height:340px}
-.lightbox-info{padding:34px}
-.lightbox-info h3{font-size:1.55rem;color:var(--navy);margin:10px 0}
-.lightbox-nav{display:flex;gap:10px;margin-top:24px;flex-wrap:wrap}
-.close{position:absolute;top:20px;right:24px;background:#fff;border:0;width:42px;height:42px;border-radius:50%;font-size:24px;cursor:pointer}
-@media(max-width:900px){.about-grid{grid-template-columns:1fr}.contact-grid{grid-template-columns:1fr}.lightbox-inner{grid-template-columns:1fr}.lightbox img{height:270px}}
-@media(max-width:760px){.hero-name{font-size:2.2rem}.hero-name-marathi{font-size:1.2rem}.hero-stats{grid-template-columns:repeat(2,1fr)}.photo-overlay{opacity:1}}
+:root {
+  --navy: #12324f;
+  --teal: #0f766e;
+  --gold: #c99a2e;
+  --cream: #fbf7f0;
+  --ink: #1f2937;
+  --muted: #6b7280;
+  --radius: 18px;
+  --shadow: 0 18px 45px rgba(18, 50, 79, 0.10);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: Inter, Arial, sans-serif;
+  background: var(--cream);
+  color: var(--ink);
+  line-height: 1.6;
+}
+
+h1,
+h2,
+h3,
+.logo {
+  font-family: "Playfair Display", Georgia, serif;
+}
+
+.container {
+  max-width: 1150px;
+  margin: auto;
+  padding: 0 22px;
+}
+
+.topbar {
+  background: var(--navy);
+  color: #e7eef5;
+  font-size: 0.9rem;
+}
+
+.topbar-inner {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 10px 0;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.lang {
+  display: flex;
+  gap: 8px;
+}
+
+.lang button {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: white;
+  padding: 6px 13px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.lang button:hover {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--navy);
+}
+
+.nav {
+  background: rgba(255, 255, 255, 0.97);
+  backdrop-filter: blur(8px);
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  border-bottom: 1px solid #e5e0d6;
+}
+
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 14px 0;
+  flex-wrap: wrap;
+}
+
+.logo {
+  font-size: 1.15rem;
+  color: var(--navy);
+  font-weight: 700;
+}
+
+.menu {
+  display: flex;
+  gap: 22px;
+  flex-wrap: wrap;
+}
+
+.menu a {
+  text-decoration: none;
+  color: var(--ink);
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.menu a:hover {
+  color: var(--teal);
+}
+
+.hero {
+  background: linear-gradient(120deg, var(--navy) 0%, #17496b 55%, var(--teal) 100%);
+  color: white;
+  padding: 80px 0 70px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  left: -140px;
+  top: -140px;
+  width: 360px;
+  height: 360px;
+  border-radius: 50%;
+  background: rgba(201, 154, 46, 0.16);
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  right: -140px;
+  bottom: -160px;
+  width: 380px;
+  height: 380px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.hero-centered {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hero-photo-circle {
+  position: relative;
+  width: 190px;
+  height: 190px;
+  margin-bottom: 26px;
+}
+
+.hero-photo-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 6px solid rgba(255, 255, 255, 0.85);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.25);
+}
+
+.photo-ring {
+  position: absolute;
+  inset: -14px;
+  border: 2px dashed rgba(201, 154, 46, 0.75);
+  border-radius: 50%;
+}
+
+.eyebrow {
+  color: var(--gold);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+}
+
+.hero-eyebrow {
+  color: #f3cf7b;
+  margin-bottom: 12px;
+}
+
+.hero-name {
+  font-size: 3.1rem;
+  line-height: 1.08;
+  margin-bottom: 8px;
+  color: white;
+}
+
+.hero-name-marathi {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.5rem;
+  color: #f3cf7b;
+  margin-bottom: 16px;
+}
+
+.hero-subtitle {
+  max-width: 620px;
+  color: #dbe7ef;
+  font-size: 1.08rem;
+  margin-bottom: 28px;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 46px;
+}
+
+.btn {
+  display: inline-block;
+  padding: 13px 24px;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 700;
+  transition: 0.2s;
+}
+
+.btn-gold {
+  background: var(--gold);
+  color: var(--navy);
+}
+
+.btn-gold:hover {
+  transform: translateY(-2px);
+}
+
+.btn-outline {
+  border: 1.5px solid rgba(255, 255, 255, 0.55);
+  color: white;
+}
+
+.btn-outline:hover {
+  background: white;
+  color: var(--navy);
+}
+
+.hero-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(120px, 1fr));
+  gap: 14px;
+  width: 100%;
+  max-width: 760px;
+  background: rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: var(--radius);
+  padding: 22px;
+  backdrop-filter: blur(6px);
+}
+
+.hero-stats div {
+  text-align: center;
+}
+
+.hero-stats strong {
+  display: block;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.7rem;
+  color: #f3cf7b;
+}
+
+.hero-stats span {
+  font-size: 0.85rem;
+  color: #dbe7ef;
+}
+
+section {
+  padding: 72px 0;
+}
+
+.section-head {
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto 42px;
+}
+
+.section-head h2 {
+  font-size: 2.15rem;
+  color: var(--navy);
+  margin: 8px 0 10px;
+}
+
+.section-head p {
+  color: var(--muted);
+}
+
+.card {
+  background: white;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 40px;
+  align-items: center;
+}
+
+.about-photo img {
+  width: 100%;
+  height: 430px;
+  object-fit: cover;
+  border-radius: var(--radius);
+}
+
+.about-content h3 {
+  font-size: 1.7rem;
+  color: var(--navy);
+  margin-bottom: 12px;
+}
+
+.about-content p {
+  color: #4b5563;
+  margin-bottom: 14px;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.tag {
+  background: #eef7f5;
+  color: var(--teal);
+  padding: 7px 14px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.timeline {
+  position: relative;
+  max-width: 760px;
+  margin: auto;
+}
+
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: 19px;
+  top: 6px;
+  bottom: 6px;
+  width: 3px;
+  background: #e3d9c6;
+}
+
+.timeline-item {
+  position: relative;
+  padding-left: 62px;
+  margin-bottom: 26px;
+}
+
+.timeline-dot {
+  position: absolute;
+  left: 8px;
+  top: 20px;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: var(--gold);
+  border: 5px solid var(--cream);
+}
+
+.timeline-card {
+  padding: 22px 24px;
+}
+
+.timeline-card .year {
+  color: var(--gold);
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+}
+
+.timeline-card h3 {
+  color: var(--navy);
+  margin: 5px 0 7px;
+}
+
+.timeline-card p {
+  color: var(--muted);
+}
+
+.gallery-toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.filter-group {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.filter-chip {
+  padding: 9px 18px;
+  border: 1px solid #d8d0c0;
+  background: white;
+  color: var(--ink);
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.filter-chip:hover {
+  border-color: var(--teal);
+  color: var(--teal);
+}
+
+.filter-chip.active {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: white;
+}
+
+.search-box {
+  width: 100%;
+  max-width: 430px;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 13px 18px;
+  border: 1px solid #d8d0c0;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  background: white;
+}
+
+.gallery-count {
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-bottom: 24px;
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 22px;
+}
+
+.photo-card {
+  position: relative;
+  border-radius: var(--radius);
+  overflow: hidden;
+  cursor: pointer;
+  background: white;
+  box-shadow: var(--shadow);
+  transition: 0.25s;
+}
+
+.photo-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 24px 55px rgba(18, 50, 79, 0.16);
+}
+
+.photo-frame {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+}
+
+.photo-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.photo-card:hover .photo-frame img {
+  transform: scale(1.06);
+}
+
+.photo-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(18, 50, 79, 0.88), rgba(18, 50, 79, 0.05));
+  color: white;
+  display: flex;
+  align-items: flex-end;
+  padding: 18px;
+  opacity: 0;
+  transition: 0.25s;
+}
+
+.photo-card:hover .photo-overlay {
+  opacity: 1;
+}
+
+.photo-overlay h3 {
+  font-size: 1.05rem;
+  margin-bottom: 4px;
+}
+
+.photo-overlay p {
+  font-size: 0.82rem;
+  opacity: 0.85;
+}
+
+.photo-details {
+  padding: 16px 18px 18px;
+}
+
+.photo-details h3 {
+  font-size: 1.05rem;
+  color: var(--navy);
+  margin-bottom: 6px;
+}
+
+.photo-details p {
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.badge {
+  display: inline-block;
+  background: #fdf3dd;
+  color: #8a6516;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 999px;
+  margin-bottom: 8px;
+}
+
+.empty-state {
+  text-align: center;
+  background: white;
+  padding: 48px 20px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.empty-state h3 {
+  color: var(--navy);
+  margin-bottom: 6px;
+}
+
+.contact {
+  background: var(--navy);
+  color: white;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.contact-card {
+  background: rgba(255, 255, 255, 0.08);
+  padding: 26px;
+  border-radius: var(--radius);
+  text-align: center;
+}
+
+.contact-card strong {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--gold);
+}
+
+footer {
+  background: #0c2539;
+  color: #9fb3c4;
+  text-align: center;
+  padding: 24px;
+}
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(9, 25, 39, 0.9);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 22px;
+  z-index: 100;
+}
+
+.lightbox.open {
+  display: flex;
+}
+
+.lightbox-inner {
+  background: white;
+  max-width: 940px;
+  width: 100%;
+  max-height: 90vh;
+  border-radius: var(--radius);
+  overflow: auto;
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+}
+
+.lightbox img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  min-height: 340px;
+}
+
+.lightbox-info {
+  padding: 34px;
+}
+
+.lightbox-info h3 {
+  font-size: 1.55rem;
+  color: var(--navy);
+  margin: 10px 0;
+}
+
+.lightbox-nav {
+  display: flex;
+  gap: 10px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+
+.close {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  background: white;
+  border: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+@media (max-width: 900px) {
+  .about-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .lightbox-inner {
+    grid-template-columns: 1fr;
+  }
+
+  .lightbox img {
+    height: 270px;
+  }
+}
+
+@media (max-width: 760px) {
+  .hero-name {
+    font-size: 2.2rem;
+  }
+
+  .hero-name-marathi {
+    font-size: 1.2rem;
+  }
+
+  .hero-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .photo-overlay {
+    opacity: 1;
+  }
+}
 </style>
 </head>
+
 <body>
-<div class="topbar"><div class="container topbar-inner"><div>Welcome to my teaching portfolio</div><div class="lang"><button onclick="setLanguage('en')">English</button><button onclick="setLanguage('mr')">मराठी</button></div></div></div>
 
-<nav class="nav"><div class="container nav-inner"><div class="logo">Ms. Varsha Badwar</div><div class="menu"><a href="#about">About</a><a href="#awards">Awards</a><a href="#gallery">Gallery</a><a href="#contact">Contact</a></div></div></nav>
+<div class="topbar">
+  <div class="container topbar-inner">
+    <div>माझ्या शिक्षिका संचामध्ये आपले स्वागत आहे</div>
 
-<header class="hero"><div class="container hero-centered">
-<div class="hero-photo-circle"><img src="https://via.placeholder.com/500x500?text=Teacher+Photo" alt="Ms. Varsha Shobha Bhausahed Badwar"><div class="photo-ring"></div></div>
-<div class="eyebrow hero-eyebrow">Science Teacher • Mentor • Activity Coordinator</div>
-<h1 class="hero-name">Ms. Varsha Shobha Bhausahed Badwar</h1>
-<div class="hero-name-marathi">कु.वर्षा शोभा भाऊसाहेब बडवर</div>
-<p class="hero-subtitle">Inspiring students through learning, activities, creativity and memorable experiences.</p>
-<div class="hero-actions"><a class="btn btn-gold" href="#gallery">View Portfolio</a><a class="btn btn-outline" href="#contact">Contact Me</a></div>
-<div class="hero-stats"><div><strong>12+</strong><span>Years Experience</span></div><div><strong>35+</strong><span>Activities</span></div><div><strong>18+</strong><span>Awards</span></div><div><strong>500+</strong><span>Students Guided</span></div></div>
-</div></header>
+    <div class="lang">
+      <button onclick="setLanguage('en')">English</button>
+      <button onclick="setLanguage('mr')">मराठी</button>
+    </div>
+  </div>
+</div>
 
-<section id="about"><div class="container about-grid"><div class="about-photo"><img src="https://via.placeholder.com/700x800?text=Classroom+Photo" alt="About teacher"></div><div class="about-content"><div class="eyebrow">About Me</div><h3>Creating meaningful learning experiences</h3><p>I believe education becomes powerful when students learn through curiosity, participation and real-life activities. My teaching approach combines academics with creativity, teamwork and confidence-building.</p><p>This portfolio highlights the awards I have received and the activities I have organised with my students, presented year-wise for easy exploration.</p><div class="tags"><span class="tag">Science Teaching</span><span class="tag">Student Mentoring</span><span class="tag">Activity Coordination</span><span class="tag">Project Guidance</span><span class="tag">Cultural Events</span></div></div></div></section>
+<nav class="nav">
+  <div class="container nav-inner">
+    <div class="logo" translate="no">
+      <span class="notranslate">Ms. Varsha Badwar</span>
+    </div>
 
-<section id="awards" style="background:#fff"><div class="container"><div class="section-head"><div class="eyebrow">Recognition</div><h2>Awards & Achievements</h2><p>A journey of professional growth, student success and meaningful contribution to education.</p></div><div class="timeline" id="awardsList"></div></div></section>
+    <div class="menu">
+      <a href="#about">About</a>
+      <a href="#awards">Awards</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</nav>
 
-<section id="gallery"><div class="container"><div class="section-head"><div class="eyebrow">Portfolio</div><h2>Activities & Memories</h2><p>Explore classroom activities, student projects, celebrations and memorable school moments.</p></div>
-<div class="gallery-toolbar"><div class="filter-group" id="yearFilters"></div><div class="filter-group" id="categoryFilters"></div><div class="search-box"><input type="search" id="gallerySearch" placeholder="Search activity, award or event..." aria-label="Search gallery"></div></div>
-<div class="gallery-count" id="galleryCount"></div><div class="gallery" id="gallery"></div><div class="empty-state" id="emptyState" style="display:none"><h3>No memories found</h3><p>Try selecting another year or clearing the search.</p></div>
-</div></section>
+<header class="hero">
+  <div class="container hero-centered">
 
-<section class="contact" id="contact"><div class="container"><div class="section-head" style="color:#fff"><div class="eyebrow" style="color:#f3cf7b">Get in touch</div><h2 style="color:#fff">Contact</h2></div><div class="contact-grid"><div class="contact-card"><strong>Email</strong>teacher@example.com</div><div class="contact-card"><strong>School</strong>ABC Public School</div><div class="contact-card"><strong>Phone</strong>+91-00000-00000</div></div></div></section>
+    <div class="hero-photo-circle">
+      <img src="https://via.placeholder.com/500x500?text=Teacher+Photo" alt="Ms. Varsha Shobha Bhausahed Badwar">
+      <div class="photo-ring"></div>
+    </div>
 
-<footer>© 2026 Ms. Varsha Shobha Bhausahed Badwar • कु.वर्षा शोभा भाऊसाहेब बडवर</footer>
+    <div class="eyebrow hero-eyebrow">
+      Science Teacher • Mentor • Activity Coordinator
+    </div>
 
-<div class="lightbox" id="lightbox"><button class="close" onclick="closeLightbox()" aria-label="Close">×</button><div class="lightbox-inner"><img id="lightboxImage" src="" alt=""><div class="lightbox-info"><span class="badge" id="lightboxCategory"></span><h3 id="lightboxTitle"></h3><div style="color:var(--muted);margin-bottom:14px" id="lightboxMeta"></div><p id="lightboxDescription"></p><div class="lightbox-nav"><button class="filter-chip" onclick="previousItem()">← Previous</button><button class="filter-chip" onclick="nextItem()">Next →</button></div></div></div></div>
+    <h1 class="hero-name" translate="no">
+      <span class="notranslate">Ms. Varsha Shobha Bhausahed Badwar</span>
+    </h1>
+
+    <div class="hero-name-marathi" translate="no">
+      <span class="notranslate">कु.वर्षा शोभा भाऊसाहेब बडवर</span>
+    </div>
+
+    <p class="hero-subtitle">
+      Inspiring students through learning, activities, creativity and memorable experiences.
+    </p>
+
+    <div class="hero-actions">
+      <a class="btn btn-gold" href="#gallery">View Portfolio</a>
+      <a class="btn btn-outline" href="#contact">Contact Me</a>
+    </div>
+
+    <div class="hero-stats">
+      <div>
+        <strong>12+</strong>
+        <span>Years Experience</span>
+      </div>
+
+      <div>
+        <strong>35+</strong>
+        <span>Activities</span>
+      </div>
+
+      <div>
+        <strong>18+</strong>
+        <span>Awards</span>
+      </div>
+
+      <div>
+        <strong>500+</strong>
+        <span>Students Guided</span>
+      </div>
+    </div>
+
+  </div>
+</header>
+
+<section id="about">
+  <div class="container about-grid">
+    <div class="about-photo">
+      <img src="https://via.placeholder.com/700x800?text=Classroom+Photo" alt="About teacher">
+    </div>
+
+    <div class="about-content">
+      <div class="eyebrow">About Me</div>
+      <h3>Creating meaningful learning experiences</h3>
+
+      <p>
+        I believe education becomes powerful when students learn through curiosity,
+        participation and real-life activities. My teaching approach combines academics
+        with creativity, teamwork and confidence-building.
+      </p>
+
+      <p>
+        This portfolio highlights the awards I have received and the activities I have
+        organised with my students, presented year-wise for easy exploration.
+      </p>
+
+      <div class="tags">
+        <span class="tag">Science Teaching</span>
+        <span class="tag">Student Mentoring</span>
+        <span class="tag">Activity Coordination</span>
+        <span class="tag">Project Guidance</span>
+        <span class="tag">Cultural Events</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="awards" style="background: white;">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">Recognition</div>
+      <h2>Awards & Achievements</h2>
+      <p>A journey of professional growth, student success and meaningful contribution to education.</p>
+    </div>
+
+    <div class="timeline" id="awardsList"></div>
+  </div>
+</section>
+
+<section id="gallery">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">Portfolio</div>
+      <h2>Activities & Memories</h2>
+      <p>Explore classroom activities, student projects, celebrations and memorable school moments.</p>
+    </div>
+
+    <div class="gallery-toolbar">
+      <div class="filter-group" id="yearFilters"></div>
+      <div class="filter-group" id="categoryFilters"></div>
+
+      <div class="search-box">
+        <input
+          type="search"
+          id="gallerySearch"
+          placeholder="Search activity, award or event..."
+          aria-label="Search gallery"
+        >
+      </div>
+    </div>
+
+    <div class="gallery-count" id="galleryCount"></div>
+    <div class="gallery" id="gallery"></div>
+
+    <div class="empty-state" id="emptyState" style="display: none;">
+      <h3>No memories found</h3>
+      <p>Try selecting another year or clearing the search.</p>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="container">
+    <div class="section-head" style="color: white;">
+      <div class="eyebrow" style="color: #f3cf7b;">Get in touch</div>
+      <h2 style="color: white;">Contact</h2>
+    </div>
+
+    <div class="contact-grid">
+      <div class="contact-card">
+        <strong>Email</strong>
+        teacher@example.com
+      </div>
+
+      <div class="contact-card">
+        <strong>School</strong>
+        ABC Public School
+      </div>
+
+      <div class="contact-card">
+        <strong>Phone</strong>
+        +91-00000-00000
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © 2026
+  <span class="notranslate" translate="no">Ms. Varsha Shobha Bhausahed Badwar</span>
+  •
+  <span class="notranslate" translate="no">कु.वर्षा शोभा भाऊसाहेब बडवर</span>
+</footer>
+
+<div class="lightbox" id="lightbox">
+  <button class="close" onclick="closeLightbox()" aria-label="Close">×</button>
+
+  <div class="lightbox-inner">
+    <img id="lightboxImage" src="" alt="">
+
+    <div class="lightbox-info">
+      <span class="badge" id="lightboxCategory"></span>
+      <h3 id="lightboxTitle"></h3>
+      <div style="color: var(--muted); margin-bottom: 14px;" id="lightboxMeta"></div>
+      <p id="lightboxDescription"></p>
+
+      <div class="lightbox-nav">
+        <button class="filter-chip" onclick="previousItem()">← Previous</button>
+        <button class="filter-chip" onclick="nextItem()">Next →</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script>
-const awards=[{year:"2025",title:"Best Teacher Award",detail:"Received for innovative teaching methods, student mentoring and contribution to school activities."},{year:"2024",title:"Science Exhibition Guide",detail:"Guided students to win first prize at the district-level science exhibition."},{year:"2023",title:"Excellence in Teaching",detail:"Recognised by the school for outstanding classroom performance and student engagement."},{year:"2022",title:"Best Activity Coordinator",detail:"Appreciated for organising cultural, academic and sports activities throughout the year."}];
-const items=[{title:"Science Exhibition 2025",year:"2025",category:"Student Project",date:"14 August 2025",image:"https://via.placeholder.com/800x600?text=Science+Exhibition",description:"Students presented working models on renewable energy. The project received first prize at the district-level exhibition."},{title:"Annual Sports Day",year:"2025",category:"Sports",date:"02 December 2025",image:"https://via.placeholder.com/800x600?text=Sports+Day",description:"Students participated in track events, relay races and team games. I coordinated practice sessions and event arrangements."},{title:"Cultural Fest Performance",year:"2024",category:"Cultural Event",date:"18 November 2024",image:"https://via.placeholder.com/800x600?text=Cultural+Fest",description:"Students performed a group dance and drama based on environmental awareness during the annual cultural festival."},{title:"Maths Model Making",year:"2024",category:"Classroom Activity",date:"10 July 2024",image:"https://via.placeholder.com/800x600?text=Classroom+Activity",description:"Students created 3D geometry models using cardboard and recycled materials to understand practical applications of mathematics."},{title:"Educational Field Trip",year:"2023",category:"Trip",date:"22 September 2023",image:"https://via.placeholder.com/800x600?text=Field+Trip",description:"Organised a visit to the local science museum, where students explored interactive exhibits and completed observation worksheets."},{title:"Reading Day Celebration",year:"2023",category:"Memory",date:"15 June 2023",image:"https://via.placeholder.com/800x600?text=Reading+Day",description:"Students participated in storytelling, book reviews and a reading corner activity to develop a love for reading."}];
-const years=["All",...new Set(items.map(i=>i.year))];const categories=["All",...new Set(items.map(i=>i.category))];
-let selectedYear="All",selectedCategory="All",searchQuery="",currentItemId=null;
+const awards = [
+  {
+    year: "2025",
+    title: "Best Teacher Award",
+    detail: "Received for innovative teaching methods, student mentoring and contribution to school activities."
+  },
+  {
+    year: "2024",
+    title: "Science Exhibition Guide",
+    detail: "Guided students to win first prize at the district-level science exhibition."
+  },
+  {
+    year: "2023",
+    title: "Excellence in Teaching",
+    detail: "Recognised by the school for outstanding classroom performance and student engagement."
+  },
+  {
+    year: "2022",
+    title: "Best Activity Coordinator",
+    detail: "Appreciated for organising cultural, academic and sports activities throughout the year."
+  }
+];
 
-function buildFilters(){const yearBox=document.getElementById("yearFilters"),categoryBox=document.getElementById("categoryFilters");yearBox.innerHTML="";categoryBox.innerHTML="";
-["All",...new Set(items.map(i=>i.year))].forEach(year=>{const b=document.createElement("button");b.className="filter-chip"+(year===selectedYear?" active":"");b.textContent=year==="All"?"All Years":year;b.onclick=()=>{selectedYear=year;buildFilters();renderGallery();};yearBox.appendChild(b);});
-["All",...new Set(items.map(i=>i.category))].forEach(category=>{const b=document.createElement("button");b.className="filter-chip"+(category===selectedCategory?" active":"");b.textContent=category==="All"?"All Types":category;b.onclick=()=>{selectedCategory=category;buildFilters();renderGallery();};categoryBox.appendChild(b);});}
+const items = [
+  {
+    title: "Science Exhibition 2025",
+    year: "2025",
+    category: "Student Project",
+    date: "14 August 2025",
+    image: "https://via.placeholder.com/800x600?text=Science+Exhibition",
+    description: "Students presented working models on renewable energy. The project received first prize at the district-level exhibition."
+  },
+  {
+    title: "Annual Sports Day",
+    year: "2025",
+    category: "Sports",
+    date: "02 December 2025",
+    image: "https://via.placeholder.com/800x600?text=Sports+Day",
+    description: "Students participated in track events, relay races and team games. I coordinated practice sessions and event arrangements."
+  },
+  {
+    title: "Cultural Fest Performance",
+    year: "2024",
+    category: "Cultural Event",
+    date: "18 November 2024",
+    image: "https://via.placeholder.com/800x600?text=Cultural+Fest",
+    description: "Students performed a group dance and drama based on environmental awareness during the annual cultural festival."
+  },
+  {
+    title: "Maths Model Making",
+    year: "2024",
+    category: "Classroom Activity",
+    date: "10 July 2024",
+    image: "https://via.placeholder.com/800x600?text=Classroom+Activity",
+    description: "Students created 3D geometry models using cardboard and recycled materials to understand practical applications of mathematics."
+  },
+  {
+    title: "Educational Field Trip",
+    year: "2023",
+    category: "Trip",
+    date: "22 September 2023",
+    image: "https://via.placeholder.com/800x600?text=Field+Trip",
+    description: "Organised a visit to the local science museum, where students explored interactive exhibits and completed observation worksheets."
+  },
+  {
+    title: "Reading Day Celebration",
+    year: "2023",
+    category: "Memory",
+    date: "15 June 2023",
+    image: "https://via.placeholder.com/800x600?text=Reading+Day",
+    description: "Students participated in storytelling, book reviews and a reading corner activity to develop a love for reading."
+  }
+];
 
-function getVisibleItems(){return items.filter(item=>{const matchYear=selectedYear==="All"||item.year===selectedYear;const matchCategory=selectedCategory==="All"||item.category===selectedCategory;const text=(item.title+" "+item.category+" "+item.description+" "+item.date).toLowerCase();return matchYear&&matchCategory&&text.includes(searchQuery.toLowerCase());});}
+let selectedYear = "All";
+let selectedCategory = "All";
+let searchQuery = "";
+let currentItemId = null;
 
-function renderGallery(){const gallery=document.getElementById("gallery"),empty=document.getElementById("emptyState"),count=document.getElementById("galleryCount");gallery.innerHTML="";const visible=getVisibleItems();count.textContent=visible.length+" item"+(visible.length===1?"":"s")+" found";
-if(!visible.length){empty.style.display="block";return;}empty.style.display="none";
-visible.forEach(item=>{const card=document.createElement("article");card.className="photo-card";card.tabIndex=0;card.setAttribute("role","button");card.onclick=()=>openLightbox(item);card.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openLightbox(item);}};
-card.innerHTML=`<div class="photo-frame"><img src="${item.image}" alt="${item.title}" loading="lazy"><div class="photo-overlay"><div><h3>${item.title}</h3><p>${item.date}</p></div></div></div><div class="photo-details"><span class="badge">${item.year} • ${item.category}</span><h3>${item.title}</h3><p>${item.date}</p></div>`;gallery.appendChild(card);});}
+function buildFilters() {
+  const yearBox = document.getElementById("yearFilters");
+  const categoryBox = document.getElementById("categoryFilters");
 
-const awardsList=document.getElementById("awardsList");awards.forEach(a=>{const div=document.createElement("div");div.className="timeline-item";div.innerHTML=`<div class="timeline-dot"></div><div class="card timeline-card"><div class="year">${a.year}</div><h3>${a.title}</h3><p>${a.detail}</p></div>`;awardsList.appendChild(div);});
+  yearBox.innerHTML = "";
+  categoryBox.innerHTML = "";
 
-function openLightbox(item){currentItemId=item.title;document.getElementById("lightboxImage").src=item.image;document.getElementById("lightboxTitle").textContent=item.title;document.getElementById("lightboxCategory").textContent=item.category;document.getElementById("lightboxMeta").textContent=item.year+" • "+item.date;document.getElementById("lightboxDescription").textContent=item.description;document.getElementById("lightbox").classList.add("open");}
-function closeLightbox(){document.getElementById("lightbox").classList.remove("open");currentItemId=null;}
-function changeItem(direction){const visible=getVisibleItems();const index=visible.findIndex(i=>i.title===currentItemId);if(index===-1)return;const next=(index+direction+visible.length)%visible.length;openLightbox(visible[next]);}
-function previousItem(){changeItem(-1);}function nextItem(){changeItem(1);}
-document.getElementById("lightbox").addEventListener("click",e=>{if(e.target.id==="lightbox")closeLightbox();});
-document.getElementById("gallerySearch").addEventListener("input",e=>{searchQuery=e.target.value;renderGallery();});
-document.addEventListener("keydown",e=>{if(!document.getElementById("lightbox").classList.contains("open"))return;if(e.key==="Escape")closeLightbox();if(e.key==="ArrowLeft")previousItem();if(e.key==="ArrowRight")nextItem();});
-function setLanguage(code){const url=encodeURIComponent(window.location.href);window.open(`https://translate.google.com/translate?sl=auto&tl=${code}&u=${url}`,"_self");}
-buildFilters();renderGallery();
+  ["All", ...new Set(items.map(item => item.year))].forEach(year => {
+    const button = document.createElement("button");
+    button.className = "filter-chip" + (year === selectedYear ? " active" : "");
+    button.textContent = year === "All" ? "All Years" : year;
+
+    button.onclick = () => {
+      selectedYear = year;
+      buildFilters();
+      renderGallery();
+    };
+
+    yearBox.appendChild(button);
+  });
+
+  ["All", ...new Set(items.map(item => item.category))].forEach(category => {
+    const button = document.createElement("button");
+    button.className = "filter-chip" + (category === selectedCategory ? " active" : "");
+    button.textContent = category === "All" ? "All Types" : category;
+
+    button.onclick = () => {
+      selectedCategory = category;
+      buildFilters();
+      renderGallery();
+    };
+
+    categoryBox.appendChild(button);
+  });
+}
+
+function getVisibleItems() {
+  return items.filter(item => {
+    const matchesYear = selectedYear === "All" || item.year === selectedYear;
+    const matchesCategory = selectedCategory === "All" || item.category === selectedCategory;
+
+    const text = `
+      ${item.title}
+      ${item.category}
+      ${item.description}
+      ${item.date}
+    `.toLowerCase();
+
+    return matchesYear && matchesCategory && text.includes(searchQuery.toLowerCase());
+  });
+}
+
+function renderGallery() {
+  const gallery = document.getElementById("gallery");
+  const emptyState = document.getElementById("emptyState");
+  const countBox = document.getElementById("galleryCount");
+
+  gallery.innerHTML = "";
+
+  const visibleItems = getVisibleItems();
+
+  countBox.textContent = `${visibleItems.length} item${visibleItems.length === 1 ? "" : "s"} found`;
+
+  if (visibleItems.length === 0) {
+    emptyState.style.display = "block";
+    return;
+  }
+
+  emptyState.style.display = "none";
+
+  visibleItems.forEach(item => {
+    const card = document.createElement("article");
+    card.className = "photo-card";
+    card.tabIndex = 0;
+    card.setAttribute("role", "button");
+    card.setAttribute("aria-label", item.title);
+
+    card.onclick = () => openLightbox(item);
+
+    card.onkeydown = event => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        openLightbox(item);
+      }
+    };
+
+    card.innerHTML = `
+      <div class="photo-frame">
+        <img src="${item.image}" alt="${item.title}" loading="lazy">
+
+        <div class="photo-overlay">
+          <div>
+            <h3>${item.title}</h3>
+            <p>${item.date}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="photo-details">
+        <span class="badge">${item.year} • ${item.category}</span>
+        <h3>${item.title}</h3>
+        <p>${item.date}</p>
+      </div>
+    `;
+
+    gallery.appendChild(card);
+  });
+}
+
+const awardsList = document.getElementById("awardsList");
+
+awards.forEach(award => {
+  const timelineItem = document.createElement("div");
+  timelineItem.className = "timeline-item";
+
+  timelineItem.innerHTML = `
+    <div class="timeline-dot"></div>
+    <div class="card timeline-card">
+      <div class="year">${award.year}</div>
+      <h3>${award.title}</h3>
+      <p>${award.detail}</p>
+    </div>
+  `;
+
+  awardsList.appendChild(timelineItem);
+});
+
+function openLightbox(item) {
+  currentItemId = item.title;
+
+  document.getElementById("lightboxImage").src = item.image;
+  document.getElementById("lightboxTitle").textContent = item.title;
+  document.getElementById("lightboxCategory").textContent = item.category;
+  document.getElementById("lightboxMeta").textContent = `${item.year} • ${item.date}`;
+  document.getElementById("lightboxDescription").textContent = item.description;
+  document.getElementById("lightbox").classList.add("open");
+}
+
+function closeLightbox() {
+  document.getElementById("lightbox").classList.remove("open");
+  currentItemId = null;
+}
+
+function changeItem(direction) {
+  const visibleItems = getVisibleItems();
+  const currentIndex = visibleItems.findIndex(item => item.title === currentItemId);
+
+  if (currentIndex === -1) return;
+
+  const nextIndex =
+    (currentIndex + direction + visibleItems.length) % visibleItems.length;
+
+  openLightbox(visibleItems[nextIndex]);
+}
+
+function previousItem() {
+  changeItem(-1);
+}
+
+function nextItem() {
+  changeItem(1);
+}
+
+document.getElementById("lightbox").addEventListener("click", event => {
+  if (event.target.id === "lightbox") {
+    closeLightbox();
+  }
+});
+
+document.getElementById("gallerySearch").addEventListener("input", event => {
+  searchQuery = event.target.value;
+  renderGallery();
+});
+
+document.addEventListener("keydown", event => {
+  if (!document.getElementById("lightbox").classList.contains("open")) return;
+
+  if (event.key === "Escape") closeLightbox();
+  if (event.key === "ArrowLeft") previousItem();
+  if (event.key === "ArrowRight") nextItem();
+});
+
+function redirectToLanguage(languageCode) {
+  const currentUrl = encodeURIComponent(window.location.href);
+  const translateUrl = `https://translate.google.com/translate?sl=auto&tl=${languageCode}&u=${currentUrl}`;
+
+  window.location.href = translateUrl;
+}
+
+function setLanguage(languageCode) {
+  localStorage.setItem("preferredLanguage", languageCode);
+  redirectToLanguage(languageCode);
+}
+
+window.addEventListener("load", () => {
+  const savedLanguage = localStorage.getItem("preferredLanguage");
+
+  if (!savedLanguage) {
+    localStorage.setItem("preferredLanguage", "mr");
+    redirectToLanguage("mr");
+  }
+});
+
+buildFilters();
+renderGallery();
 </script>
+
 </body>
 </html>
