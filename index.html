@@ -594,6 +594,11 @@ section {
   color: var(--gold);
 }
 
+.contact-card a {
+  color: white;
+  text-decoration: none;
+}
+
 footer {
   background: #0c2539;
   color: #9fb3c4;
@@ -706,7 +711,7 @@ footer {
 
 <div class="topbar">
   <div class="container topbar-inner">
-    <div>माझ्या शिक्षिका संचामध्ये आपले स्वागत आहे</div>
+    <div>Welcome to my teaching portfolio</div>
 
     <div class="lang">
       <button onclick="setLanguage('en')">English</button>
@@ -870,7 +875,7 @@ footer {
     <div class="contact-grid">
       <div class="contact-card">
         <strong>Email</strong>
-        teacher@example.com
+        <a href="mailto:teacher@example.com">teacher@example.com</a>
       </div>
 
       <div class="contact-card">
@@ -1175,26 +1180,17 @@ document.addEventListener("keydown", event => {
   if (event.key === "ArrowRight") nextItem();
 });
 
-function redirectToLanguage(languageCode) {
-  const currentUrl = encodeURIComponent(window.location.href);
-  const translateUrl = `https://translate.google.com/translate?sl=auto&tl=${languageCode}&u=${currentUrl}`;
-
-  window.location.href = translateUrl;
-}
-
 function setLanguage(languageCode) {
-  localStorage.setItem("preferredLanguage", languageCode);
-  redirectToLanguage(languageCode);
-}
-
-window.addEventListener("load", () => {
-  const savedLanguage = localStorage.getItem("preferredLanguage");
-
-  if (!savedLanguage) {
-    localStorage.setItem("preferredLanguage", "mr");
-    redirectToLanguage("mr");
+  if (languageCode === "mr") {
+    alert(
+      "मराठीसाठी: पेजवर उजवीकडे क्लिक करा आणि “Translate to Marathi” निवडा."
+    );
+  } else {
+    alert(
+      "For English: right-click anywhere on the page and choose “Translate to English”."
+    );
   }
-});
+}
 
 buildFilters();
 renderGallery();
