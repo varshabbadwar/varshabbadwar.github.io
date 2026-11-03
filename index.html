@@ -729,7 +729,7 @@ footer {
     <div class="menu">
       <a href="#about">About</a>
       <a href="#awards">Awards</a>
-      <a href="#gallery">Gallery</a>
+      <a href="#gallery-section">Gallery</a>
       <a href="#contact">Contact</a>
     </div>
   </div>
@@ -760,7 +760,7 @@ footer {
     </p>
 
     <div class="hero-actions">
-      <a class="btn btn-gold" href="#gallery">View Portfolio</a>
+      <a class="btn btn-gold" href="#gallery-section">View Portfolio</a>
       <a class="btn btn-outline" href="#contact">Contact Me</a>
     </div>
 
@@ -833,7 +833,7 @@ footer {
   </div>
 </section>
 
-<section id="gallery">
+<section id="gallery-section">
   <div class="container">
     <div class="section-head">
       <div class="eyebrow">Portfolio</div>
@@ -856,7 +856,7 @@ footer {
     </div>
 
     <div class="gallery-count" id="galleryCount"></div>
-    <div class="gallery" id="gallery"></div>
+    <div class="gallery" id="galleryGrid"></div>
 
     <div class="empty-state" id="emptyState" style="display: none;">
       <h3>No memories found</h3>
@@ -1051,7 +1051,7 @@ function getVisibleItems() {
 }
 
 function renderGallery() {
-  const gallery = document.getElementById("gallery");
+  const gallery = document.getElementById("galleryGrid");
   const emptyState = document.getElementById("emptyState");
   const countBox = document.getElementById("galleryCount");
 
