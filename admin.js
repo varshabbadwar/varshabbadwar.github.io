@@ -1,205 +1,50 @@
-import { auth, db } from "./firebase-config.js";
-import {
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-  signOut
-} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
-import {
-  addDoc,
-  collection,
-  deleteDoc,
-  doc,
-  getDocs,
-  orderBy,
-  query,
-  serverTimestamp,
-  updateDoc
-} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+import { auth, db } from './firebase-config.js';
+import { onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js';
+import { addDoc, collection, deleteDoc, doc, getDocs, orderBy, query, serverTimestamp, updateDoc, where } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
 
-// Must match the administrator UID used in your Firestore Security Rules.
-const ADMIN_UID = "Iv50JJ7KrNeREMftM70eqGmOWYJ3";
-const COLLECTIONS = {
-  gallery: { singular: "gallery memory", plural: "Gallery records", image: true, category: true, date: true },
-  awards: { singular: "award", plural: "Awards", image: false, category: false, date: false },
-  activities: { singular: "activity", plural: "Activities", image: true, category: true, date: true }
-};
-
-const $ = (id) => document.getElementById(id);
-let activeCollection = "gallery";
+const ADMIN_UID = 'Iv50JJ7KrNeREMftM70eqGmOWYJ3';
+const WORKER_URL = 'https://REPLACE-WITH-YOUR-WORKER.workers.dev';
+const $ = id => document.getElementById(id);
+let activeType = 'gallery';
 let currentUser = null;
+let existingImageUrl = '';
 
-function showMessage(element, message, type = "error") {
-  element.textContent = message;
-  element.className = `message ${type}`;
+function status(message, error=false){ $('status').textContent=message; $('status').classList.toggle('error',error); }
+function resetForm(){ $('contentForm').reset(); $('docId').value=''; $('year').value=new Date().getFullYear(); $('published').checked=true; $('imageFile').value=''; $('preview').classList.add('hidden'); existingImageUrl=''; $('saveBtn').textContent='Upload & Save'; }
+function setType(type){ activeType=type; $('recordType').value=type; document.querySelectorAll('.tabs button').forEach(b=>b.classList.toggle('active',b.dataset.tab===type)); $('categoryWrap').classList.toggle('hidden',type==='awards'); $('dateWrap').classList.toggle('hidden',type==='awards'); $('imageWrap').classList.toggle('hidden',type==='awards'); $('detailLabel').querySelector('label').textContent=type==='awards'?'Details *':'Description *'; $('listTitle').textContent=type==='awards'?'Awards':'Gallery entries'; resetForm(); loadRecords(); }
+async function uploadImage(file){
+  if(!file) return existingImageUrl;
+  if(!['image/jpeg','image/png','image/webp'].includes(file.type)) throw new Error('Choose a JPG, PNG or WebP image.');
+  if(file.size>5*1024*1024) throw new Error('Image must be 5 MB or smaller.');
+  if(WORKER_URL.includes('REPLACE-WITH')) throw new Error('Cloudflare Worker URL is not configured yet. Follow the README deployment steps.');
+  const token=await currentUser.getIdToken(true);
+  const base64=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(String(reader.result).split(',')[1]);reader.onerror=reject;reader.readAsDataURL(file);});
+  const safeName=file.name.toLowerCase().replace(/[^a-z0-9.-]+/g,'-').replace(/^-+|-+$/g,'').slice(-90);
+  const response=await fetch(`${WORKER_URL}/upload`,{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`},body:JSON.stringify({fileName:safeName,contentType:file.type,contentBase64:base64,year:$('year').value,category:activeType})});
+  const data=await response.json().catch(()=>({})); if(!response.ok) throw new Error(data.error||`Image upload failed (${response.status}).`); return data.imageUrl;
 }
-function clearMessage(element) {
-  element.textContent = "";
-  element.className = "message";
+async function saveRecord(event){
+ event.preventDefault(); if(!currentUser||currentUser.uid!==ADMIN_UID) return;
+ $('saveBtn').disabled=true; status('Saving record…');
+ try{
+  let imageUrl=existingImageUrl; const file=$('imageFile').files[0]; if(activeType==='gallery' && file) {status('Uploading image to GitHub…'); imageUrl=await uploadImage(file);} if(activeType==='gallery'&&!imageUrl) throw new Error('Please select a photograph.');
+  const data={title:$('title').value.trim(),year:String($('year').value),detail:$('description').value.trim(),description:$('description').value.trim(),published:$('published').checked,updatedAt:serverTimestamp()};
+  if(activeType==='gallery'){data.category=$('category').value;data.date=$('date').value;data.imageUrl=imageUrl;data.image=imageUrl;}
+  const id=$('docId').value;
+  if(id) await updateDoc(doc(db,activeType,id),data); else await addDoc(collection(db,activeType),{...data,createdAt:serverTimestamp()});
+  status(activeType==='gallery'?'Gallery entry saved successfully.':'Award saved successfully.'); resetForm(); await loadRecords();
+ }catch(e){console.error(e);status(e.message||'Unable to save record.',true);}finally{$('saveBtn').disabled=false;}
 }
-function escapeHtml(value = "") {
-  return String(value).replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
+async function loadRecords(){
+ if(!currentUser)return; $('records').textContent='Loading…';
+ try{const snap=await getDocs(query(collection(db,activeType),orderBy('createdAt','desc'))); $('records').innerHTML=''; if(snap.empty){$('records').textContent='No records yet.';return;}
+ snap.forEach(s=>{const d=s.data();const el=document.createElement('div');el.className='item';const info=document.createElement('div');const title=document.createElement('strong');title.textContent=d.title||'Untitled';const meta=document.createElement('small');meta.textContent=`${d.year||''} · ${d.published?'Published':'Draft'}`;info.append(title,meta);const actions=document.createElement('div');actions.className='row';const edit=document.createElement('button');edit.className='secondary';edit.textContent='Edit';edit.onclick=()=>editRecord(s.id,d);const del=document.createElement('button');del.className='danger';del.textContent='Delete';del.onclick=()=>removeRecord(s.id,d.title);actions.append(edit,del);el.append(info,actions);$('records').append(el);});
+ }catch(e){console.error(e);$('records').textContent='Could not load records: '+e.message;}
 }
-function setCollection(collectionName) {
-  activeCollection = collectionName;
-  document.querySelectorAll(".tab").forEach((tab) => tab.classList.toggle("active", tab.dataset.collection === collectionName));
-  const config = COLLECTIONS[collectionName];
-  $("formHeading").textContent = `Add ${config.singular}`;
-  $("listHeading").textContent = config.plural;
-  $("categoryField").classList.toggle("hidden", !config.category);
-  $("dateField").classList.toggle("hidden", !config.date);
-  $("imageField").classList.toggle("hidden", !config.image);
-  $("category").required = config.category;
-  $("imageUrl").required = config.image;
-  $("descriptionLabel").textContent = collectionName === "awards" ? "Award details" : "Description";
-  resetForm();
-  loadRecords();
-}
-function resetForm() {
-  $("recordForm").reset();
-  $("recordId").value = "";
-  $("published").checked = true;
-  $("formHeading").textContent = `Add ${COLLECTIONS[activeCollection].singular}`;
-  $("saveBtn").textContent = "Save record";
-  $("cancelEditBtn").classList.add("hidden");
-  clearMessage($("formMessage"));
-}
-function validateRecord() {
-  const config = COLLECTIONS[activeCollection];
-  const title = $("title").value.trim();
-  const year = Number($("year").value);
-  const imageUrl = $("imageUrl").value.trim();
-  if (!title || !Number.isInteger(year) || year < 1990 || year > 2100) throw new Error("Enter a title and a valid year between 1990 and 2100.");
-  if (config.image && !/^https:\/\//i.test(imageUrl)) throw new Error("Please enter a publicly accessible HTTPS image URL.");
-  const record = {
-    title,
-    year: String(year),
-    description: $("description").value.trim(),
-    published: $("published").checked,
-    updatedAt: serverTimestamp()
-  };
-  if (config.category) record.category = $("category").value.trim();
-  if (config.date) record.date = $("date").value.trim();
-  if (config.image) record.imageUrl = imageUrl;
-  if (activeCollection === "awards") record.detail = record.description;
-  return record;
-}
-async function loadRecords() {
-  $("recordList").innerHTML = '<div class="empty">Loading records…</div>';
-  $("recordCount").textContent = "Loading…";
-  try {
-    const recordsQuery = query(collection(db, activeCollection), orderBy("year", "desc"));
-    const snapshot = await getDocs(recordsQuery);
-    const records = snapshot.docs.map((item) => ({ id: item.id, ...item.data() }));
-    $("recordCount").textContent = `${records.length} record${records.length === 1 ? "" : "s"}`;
-    if (!records.length) {
-      $("recordList").innerHTML = '<div class="empty">No records yet. Add your first one using the form.</div>';
-      return;
-    }
-    $("recordList").innerHTML = records.map((record) => {
-      const image = record.imageUrl || record.image || "";
-      const imageHtml = image ? `<img src="${escapeHtml(image)}" alt="" loading="lazy" onerror="this.style.visibility='hidden'">` : '<div></div>';
-      const detail = [record.year, record.category, record.date].filter(Boolean).map(escapeHtml).join(" · ");
-      return `<article class="record">${imageHtml}<div><h4>${escapeHtml(record.title || "Untitled")}</h4><p>${detail}</p><span class="status ${record.published ? "live" : "draft"}">${record.published ? "Published" : "Draft"}</span></div><div class="record-actions"><button class="btn secondary small" data-action="edit" data-id="${escapeHtml(record.id)}" type="button">Edit</button><button class="btn danger small" data-action="delete" data-id="${escapeHtml(record.id)}" type="button">Delete</button></div></article>`;
-    }).join("");
-    $("recordList").querySelectorAll("button[data-action]").forEach((button) => {
-      button.addEventListener("click", () => {
-        const record = records.find((item) => item.id === button.dataset.id);
-        if (!record) return;
-        if (button.dataset.action === "edit") editRecord(record);
-        if (button.dataset.action === "delete") removeRecord(record);
-      });
-    });
-  } catch (error) {
-    console.error("Unable to load admin records:", error);
-    $("recordCount").textContent = "Could not load records";
-    $("recordList").innerHTML = '<div class="empty">Unable to load records. Check Firestore rules and your connection.</div>';
-  }
-}
-function editRecord(record) {
-  $("recordId").value = record.id;
-  $("title").value = record.title || "";
-  $("year").value = record.year || "";
-  $("category").value = record.category || "";
-  $("date").value = record.date || "";
-  $("imageUrl").value = record.imageUrl || record.image || "";
-  $("description").value = record.description || record.detail || "";
-  $("published").checked = record.published === true;
-  $("formHeading").textContent = `Edit ${COLLECTIONS[activeCollection].singular}`;
-  $("saveBtn").textContent = "Update record";
-  $("cancelEditBtn").classList.remove("hidden");
-  clearMessage($("formMessage"));
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}
-async function removeRecord(record) {
-  if (!window.confirm(`Delete “${record.title || "this record"}” permanently?`)) return;
-  try {
-    await deleteDoc(doc(db, activeCollection, record.id));
-    await loadRecords();
-  } catch (error) {
-    console.error("Delete failed:", error);
-    alert("Could not delete this record. Check your Firestore security rules.");
-  }
-}
-
-$("loginForm").addEventListener("submit", async (event) => {
-  event.preventDefault();
-  clearMessage($("loginMessage"));
-  $("loginBtn").disabled = true;
-  $("loginBtn").textContent = "Signing in…";
-  try {
-    await signInWithEmailAndPassword(auth, $("email").value.trim(), $("password").value);
-  } catch (error) {
-    console.error("Admin sign-in failed:", error);
-    showMessage($("loginMessage"), "Sign-in failed. Check the email/password and Firebase Authentication settings.");
-  } finally {
-    $("loginBtn").disabled = false;
-    $("loginBtn").textContent = "Sign in";
-  }
-});
-
-$("logoutBtn").addEventListener("click", () => signOut(auth));
-document.querySelectorAll(".tab").forEach((tab) => tab.addEventListener("click", () => setCollection(tab.dataset.collection)));
-$("cancelEditBtn").addEventListener("click", resetForm);
-$("refreshBtn").addEventListener("click", loadRecords);
-$("recordForm").addEventListener("submit", async (event) => {
-  event.preventDefault();
-  clearMessage($("formMessage"));
-  $("saveBtn").disabled = true;
-  try {
-    const record = validateRecord();
-    const id = $("recordId").value;
-    if (id) {
-      await updateDoc(doc(db, activeCollection, id), record);
-      showMessage($("formMessage"), "Record updated successfully.", "success");
-    } else {
-      record.createdAt = serverTimestamp();
-      await addDoc(collection(db, activeCollection), record);
-      showMessage($("formMessage"), "Record saved successfully.", "success");
-    }
-    resetForm();
-    await loadRecords();
-  } catch (error) {
-    console.error("Save failed:", error);
-    showMessage($("formMessage"), error.message || "Could not save the record. Check Firestore rules.");
-  } finally {
-    $("saveBtn").disabled = false;
-  }
-});
-
-onAuthStateChanged(auth, (user) => {
-  currentUser = user;
-  if (user && user.uid === ADMIN_UID) {
-    $("loginPanel").classList.add("hidden");
-    $("adminPanel").classList.remove("hidden");
-    $("logoutBtn").classList.remove("hidden");
-    $("signedInAs").textContent = user.email || "Administrator";
-    setCollection(activeCollection);
-  } else {
-    if (user) signOut(auth);
-    $("adminPanel").classList.add("hidden");
-    $("loginPanel").classList.remove("hidden");
-    $("logoutBtn").classList.add("hidden");
-    $("signedInAs").textContent = "";
-    if (user) showMessage($("loginMessage"), "This account is not authorized to administer this portfolio.");
-  }
-});
+function editRecord(id,d){$('docId').value=id;$('title').value=d.title||'';$('year').value=d.year||new Date().getFullYear();$('description').value=d.description||d.detail||'';$('published').checked=!!d.published;if(activeType==='gallery'){$('category').value=d.category||'Other';$('date').value=d.date||'';existingImageUrl=d.imageUrl||d.image||'';$('preview').src=existingImageUrl;$('preview').classList.toggle('hidden',!existingImageUrl);}$('saveBtn').textContent='Update record';window.scrollTo({top:0,behavior:'smooth'});}
+async function removeRecord(id,title){if(!confirm(`Delete “${title}” from Firestore? The image file in GitHub will remain for safety.`))return;try{await deleteDoc(doc(db,activeType,id));status('Record deleted. Its GitHub image was retained.');await loadRecords();}catch(e){status(e.message,true);}}
+$('loginBtn').onclick=async()=>{ $('loginMessage').textContent='Signing in…';try{await signInWithEmailAndPassword(auth,$('email').value.trim(),$('password').value);}catch(e){$('loginMessage').textContent=e.message;}};
+$('logoutBtn').onclick=()=>signOut(auth);
+onAuthStateChanged(auth,user=>{currentUser=user;if(user&&user.uid===ADMIN_UID){$('loginPanel').classList.add('hidden');$('appPanel').classList.remove('hidden');$('logoutBtn').classList.remove('hidden');$('signedInAs').textContent=user.email||'Administrator';loadRecords();}else{if(user)signOut(auth);$('loginPanel').classList.remove('hidden');$('appPanel').classList.add('hidden');$('logoutBtn').classList.add('hidden');if(user)$('loginMessage').textContent='This account is not authorized as the portfolio administrator.';}});
+document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>setType(b.dataset.tab));$('contentForm').addEventListener('submit',saveRecord);$('resetBtn').onclick=resetForm;$('refreshBtn').onclick=loadRecords;
+$('imageFile').addEventListener('change',()=>{const f=$('imageFile').files[0];if(!f)return;const url=URL.createObjectURL(f);$('preview').src=url;$('preview').classList.remove('hidden');});

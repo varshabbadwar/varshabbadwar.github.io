@@ -856,6 +856,7 @@ footer {
     </div>
 
     <div class="gallery-count" id="galleryCount"></div>
+    <p id="portfolioDataStatus" class="gallery-count" role="status"></p>
     <div class="gallery" id="galleryGrid"></div>
 
     <div class="empty-state" id="emptyState" style="display: none;">
@@ -1015,20 +1016,20 @@ function renderGallery() {
 
     card.innerHTML = `
       <div class="photo-frame">
-        <img src="${escapeHTML(item.image)}" alt="${escapeHTML(item.title)}" loading="lazy">
+        <img src="${item.image}" alt="${item.title}" loading="lazy">
 
         <div class="photo-overlay">
           <div>
-            <h3>${escapeHTML(item.title)}</h3>
-            <p>${escapeHTML(item.date)}</p>
+            <h3>${item.title}</h3>
+            <p>${item.date}</p>
           </div>
         </div>
       </div>
 
       <div class="photo-details">
-        <span class="badge">${escapeHTML(item.year)} • ${escapeHTML(item.category)}</span>
-        <h3>${escapeHTML(item.title)}</h3>
-        <p>${escapeHTML(item.date)}</p>
+        <span class="badge">${item.year} • ${item.category}</span>
+        <h3>${item.title}</h3>
+        <p>${item.date}</p>
       </div>
     `;
 
@@ -1039,48 +1040,32 @@ function renderGallery() {
 function renderAwards() {
   const awardsList = document.getElementById("awardsList");
   awardsList.innerHTML = "";
-
-  if (awards.length === 0) {
-    awardsList.innerHTML = '<p class="empty-state">Awards will be displayed here soon.</p>';
-    return;
-  }
-
   awards.forEach(award => {
     const timelineItem = document.createElement("div");
     timelineItem.className = "timeline-item";
-    timelineItem.innerHTML = `
-      <div class="timeline-dot"></div>
-      <div class="card timeline-card">
-        <div class="year">${escapeHTML(award.year)}</div>
-        <h3>${escapeHTML(award.title)}</h3>
-        <p>${escapeHTML(award.detail)}</p>
-      </div>
-    `;
+    const year = document.createElement("div");
+    year.className = "year";
+    year.textContent = award.year || "";
+    const title = document.createElement("h3");
+    title.textContent = award.title || "";
+    const detail = document.createElement("p");
+    detail.textContent = award.detail || award.description || "";
+    const card = document.createElement("div");
+    card.className = "card timeline-card";
+    card.append(year, title, detail);
+    const dot = document.createElement("div");
+    dot.className = "timeline-dot";
+    timelineItem.append(dot, card);
     awardsList.appendChild(timelineItem);
   });
 }
 
-// These functions let the Firebase module update the existing page without
-// converting the whole page to a JavaScript module.
-function escapeHTML(value) {
-  return String(value ?? "").replace(/[&<>"']/g, character => ({
-    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
-  }[character]));
-}
-
-window.setGalleryItems = function (data) {
+window.setGalleryItems = function(data) {
   items = Array.isArray(data) ? data : [];
-  if (selectedYear !== "All" && !items.some(item => item.year === selectedYear)) {
-    selectedYear = "All";
-  }
-  if (selectedCategory !== "All" && !items.some(item => item.category === selectedCategory)) {
-    selectedCategory = "All";
-  }
   buildFilters();
   renderGallery();
 };
-
-window.setAwardsData = function (data) {
+window.setAwardsData = function(data) {
   awards = Array.isArray(data) ? data : [];
   renderAwards();
 };
@@ -1155,7 +1140,6 @@ function setLanguage(languageCode) {
 buildFilters();
 renderGallery();
 renderAwards();
-document.getElementById("galleryCount").textContent = "Loading published memories...";
 </script>
 <script type="module" src="./portfolio-data.js"></script>
 </body>

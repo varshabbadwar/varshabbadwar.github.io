@@ -1,0 +1,11 @@
+name = "varsha-portfolio-image-uploader"
+main = "worker.js"
+compatibility_date = "2026-11-11"
+
+[vars]
+GITHUB_OWNER = "varshabbadwar"
+GITHUB_REPO = "varshabbadwar.github.io"
+GITHUB_BRANCH = "main"
+ADMIN_UID = "Iv50JJ7KrNeREMftM70eqGmOWYJ3"
+ALLOWED_ORIGIN = "https://varshabbadwar.github.io"
+# Set FIREBASE_API_KEY as a Worker secret, not a plain-text variable.
