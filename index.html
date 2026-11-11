@@ -919,79 +919,8 @@ footer {
 </div>
 
 <script>
-const awards = [
-  {
-    year: "2025",
-    title: "Best Teacher Award",
-    detail: "Received for innovative teaching methods, student mentoring and contribution to school activities."
-  },
-  {
-    year: "2024",
-    title: "Science Exhibition Guide",
-    detail: "Guided students to win first prize at the district-level science exhibition."
-  },
-  {
-    year: "2023",
-    title: "Excellence in Teaching",
-    detail: "Recognised by the school for outstanding classroom performance and student engagement."
-  },
-  {
-    year: "2022",
-    title: "Best Activity Coordinator",
-    detail: "Appreciated for organising cultural, academic and sports activities throughout the year."
-  }
-];
-
-const items = [
-  {
-    title: "Science Exhibition 2025",
-    year: "2025",
-    category: "Student Project",
-    date: "14 August 2025",
-    image: "https://via.placeholder.com/800x600?text=Science+Exhibition",
-    description: "Students presented working models on renewable energy. The project received first prize at the district-level exhibition."
-  },
-  {
-    title: "Annual Sports Day",
-    year: "2025",
-    category: "Sports",
-    date: "02 December 2025",
-    image: "https://via.placeholder.com/800x600?text=Sports+Day",
-    description: "Students participated in track events, relay races and team games. I coordinated practice sessions and event arrangements."
-  },
-  {
-    title: "Cultural Fest Performance",
-    year: "2024",
-    category: "Cultural Event",
-    date: "18 November 2024",
-    image: "https://via.placeholder.com/800x600?text=Cultural+Fest",
-    description: "Students performed a group dance and drama based on environmental awareness during the annual cultural festival."
-  },
-  {
-    title: "Maths Model Making",
-    year: "2024",
-    category: "Classroom Activity",
-    date: "10 July 2024",
-    image: "https://via.placeholder.com/800x600?text=Classroom+Activity",
-    description: "Students created 3D geometry models using cardboard and recycled materials to understand practical applications of mathematics."
-  },
-  {
-    title: "Educational Field Trip",
-    year: "2023",
-    category: "Trip",
-    date: "22 September 2023",
-    image: "https://via.placeholder.com/800x600?text=Field+Trip",
-    description: "Organised a visit to the local science museum, where students explored interactive exhibits and completed observation worksheets."
-  },
-  {
-    title: "Reading Day Celebration",
-    year: "2023",
-    category: "Memory",
-    date: "15 June 2023",
-    image: "https://via.placeholder.com/800x600?text=Reading+Day",
-    description: "Students participated in storytelling, book reviews and a reading corner activity to develop a love for reading."
-  }
-];
+let awards = [];
+let items = [];
 
 let selectedYear = "All";
 let selectedCategory = "All";
@@ -1086,20 +1015,20 @@ function renderGallery() {
 
     card.innerHTML = `
       <div class="photo-frame">
-        <img src="${item.image}" alt="${item.title}" loading="lazy">
+        <img src="${escapeHTML(item.image)}" alt="${escapeHTML(item.title)}" loading="lazy">
 
         <div class="photo-overlay">
           <div>
-            <h3>${item.title}</h3>
-            <p>${item.date}</p>
+            <h3>${escapeHTML(item.title)}</h3>
+            <p>${escapeHTML(item.date)}</p>
           </div>
         </div>
       </div>
 
       <div class="photo-details">
-        <span class="badge">${item.year} • ${item.category}</span>
-        <h3>${item.title}</h3>
-        <p>${item.date}</p>
+        <span class="badge">${escapeHTML(item.year)} • ${escapeHTML(item.category)}</span>
+        <h3>${escapeHTML(item.title)}</h3>
+        <p>${escapeHTML(item.date)}</p>
       </div>
     `;
 
@@ -1107,23 +1036,54 @@ function renderGallery() {
   });
 }
 
-const awardsList = document.getElementById("awardsList");
+function renderAwards() {
+  const awardsList = document.getElementById("awardsList");
+  awardsList.innerHTML = "";
 
-awards.forEach(award => {
-  const timelineItem = document.createElement("div");
-  timelineItem.className = "timeline-item";
+  if (awards.length === 0) {
+    awardsList.innerHTML = '<p class="empty-state">Awards will be displayed here soon.</p>';
+    return;
+  }
 
-  timelineItem.innerHTML = `
-    <div class="timeline-dot"></div>
-    <div class="card timeline-card">
-      <div class="year">${award.year}</div>
-      <h3>${award.title}</h3>
-      <p>${award.detail}</p>
-    </div>
-  `;
+  awards.forEach(award => {
+    const timelineItem = document.createElement("div");
+    timelineItem.className = "timeline-item";
+    timelineItem.innerHTML = `
+      <div class="timeline-dot"></div>
+      <div class="card timeline-card">
+        <div class="year">${escapeHTML(award.year)}</div>
+        <h3>${escapeHTML(award.title)}</h3>
+        <p>${escapeHTML(award.detail)}</p>
+      </div>
+    `;
+    awardsList.appendChild(timelineItem);
+  });
+}
 
-  awardsList.appendChild(timelineItem);
-});
+// These functions let the Firebase module update the existing page without
+// converting the whole page to a JavaScript module.
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, character => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+  }[character]));
+}
+
+window.setGalleryItems = function (data) {
+  items = Array.isArray(data) ? data : [];
+  if (selectedYear !== "All" && !items.some(item => item.year === selectedYear)) {
+    selectedYear = "All";
+  }
+  if (selectedCategory !== "All" && !items.some(item => item.category === selectedCategory)) {
+    selectedCategory = "All";
+  }
+  buildFilters();
+  renderGallery();
+};
+
+window.setAwardsData = function (data) {
+  awards = Array.isArray(data) ? data : [];
+  renderAwards();
+};
 
 function openLightbox(item) {
   currentItemId = item.title;
@@ -1194,7 +1154,9 @@ function setLanguage(languageCode) {
 
 buildFilters();
 renderGallery();
+renderAwards();
+document.getElementById("galleryCount").textContent = "Loading published memories...";
 </script>
-<script type="module" src="./firebase-test.js"></script>
+<script type="module" src="./portfolio-data.js"></script>
 </body>
 </html>
