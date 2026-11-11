@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#12324f" />
+  <title>Portfolio Admin | Ms. Varsha Badwar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root{--navy:#12324f;--teal:#0f766e;--gold:#c99a2e;--cream:#fbf7f0;--ink:#203040;--muted:#64748b;--line:#e7e2d9;--white:#fff;--red:#b42318;--green:#067647}
+    *{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font-family:Inter,system-ui,sans-serif}button,input,textarea,select{font:inherit}header{background:var(--navy);color:#fff;padding:18px max(20px,calc((100% - 1180px)/2));display:flex;align-items:center;justify-content:space-between;gap:16px}header h1{font:700 22px 'Playfair Display',serif;margin:0}header p{margin:4px 0 0;color:#d7e4eb;font-size:12px}.header-actions{display:flex;align-items:center;gap:12px}.container{max-width:1180px;margin:28px auto;padding:0 18px}.panel{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px;box-shadow:0 8px 28px #12324f0a}.login-wrap{max-width:440px;margin:7vh auto}.eyebrow{color:var(--teal);font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}.login-wrap h2,.section-title{font:700 26px 'Playfair Display',serif;color:var(--navy);margin:8px 0 18px}.field{display:flex;flex-direction:column;gap:7px;margin-bottom:15px}.field label{font-size:13px;font-weight:600}.field input,.field textarea,.field select{width:100%;border:1px solid #d8dce1;border-radius:9px;padding:11px 12px;background:#fff;color:var(--ink);outline:none}.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--teal);box-shadow:0 0 0 3px #0f766e18}.field textarea{min-height:100px;resize:vertical}.btn{border:0;border-radius:9px;padding:10px 15px;font-weight:700;cursor:pointer;background:var(--teal);color:#fff}.btn:hover{filter:brightness(.95)}.btn.secondary{background:#e8f1ef;color:var(--teal)}.btn.danger{background:#fff0ee;color:var(--red)}.btn.small{padding:7px 10px;font-size:12px}.btn:disabled{opacity:.55;cursor:not-allowed}.hidden{display:none!important}.muted{color:var(--muted);font-size:13px}.message{padding:11px 13px;border-radius:9px;margin:12px 0;font-size:13px;display:none}.message.error{display:block;background:#fff0ee;color:var(--red)}.message.success{display:block;background:#eaf7ef;color:var(--green)}.toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:18px}.tabs{display:flex;gap:8px;flex-wrap:wrap}.tab{border:1px solid var(--line);background:#fff;color:var(--navy);border-radius:30px;padding:9px 15px;cursor:pointer;font-weight:600}.tab.active{background:var(--navy);border-color:var(--navy);color:#fff}.workspace{display:grid;grid-template-columns:minmax(280px,.85fr) minmax(0,1.5fr);gap:18px;align-items:start}.form-card h3,.list-card h3{font:700 19px 'Playfair Display',serif;color:var(--navy);margin:0 0 16px}.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px}.checkrow{display:flex;align-items:center;gap:9px;font-size:13px;margin:8px 0 16px}.checkrow input{width:17px;height:17px;accent-color:var(--teal)}.form-actions{display:flex;gap:8px;flex-wrap:wrap}.record-list{display:grid;gap:10px}.record{border:1px solid var(--line);border-radius:12px;padding:12px;display:grid;grid-template-columns:72px minmax(0,1fr) auto;gap:12px;align-items:center}.record img{width:72px;height:68px;object-fit:cover;border-radius:8px;background:#f0eee8}.record h4{font-size:14px;margin:0 0 5px;color:var(--navy)}.record p{font-size:12px;color:var(--muted);margin:0;line-height:1.5}.record-actions{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}.status{display:inline-block;font-size:10px;font-weight:700;padding:4px 7px;border-radius:20px;margin-top:5px}.status.live{background:#e7f6ed;color:var(--green)}.status.draft{background:#fff4dc;color:#8a5a00}.empty{text-align:center;padding:30px 12px;color:var(--muted);font-size:13px}.hint{background:#f5f8fa;border-left:3px solid var(--gold);padding:11px 13px;border-radius:6px;font-size:12px;color:#526170;line-height:1.6;margin:12px 0}.footer{text-align:center;color:var(--muted);font-size:11px;padding:25px}.signed{font-size:12px;color:#d7e4eb}@media(max-width:800px){.workspace{grid-template-columns:1fr}.container{margin:18px auto}.panel{padding:17px}}@media(max-width:480px){header{align-items:flex-start;flex-direction:column}.header-actions{width:100%;justify-content:space-between}.two-col{grid-template-columns:1fr}.record{grid-template-columns:58px minmax(0,1fr)}.record img{width:58px;height:58px}.record-actions{grid-column:1/-1;justify-content:flex-start}}
+  </style>
+</head>
+<body>
+  <header>
+    <div><h1>Ms. Varsha Badwar · Admin</h1><p>Teacher portfolio content manager</p></div>
+    <div class="header-actions"><span id="signedInAs" class="signed"></span><button id="logoutBtn" class="btn secondary hidden" type="button">Sign out</button><a href="./index.html" style="color:#fff;font-size:13px;text-decoration:none">View website ↗</a></div>
+  </header>
+
+  <main class="container">
+    <section id="loginPanel" class="panel login-wrap">
+      <div class="eyebrow">Secure administrator access</div>
+      <h2>Welcome back</h2>
+      <p class="muted">Sign in with the administrator email and password created in Firebase Authentication.</p>
+      <form id="loginForm">
+        <div class="field"><label for="email">Email address</label><input id="email" type="email" autocomplete="username" required /></div>
+        <div class="field"><label for="password">Password</label><input id="password" type="password" autocomplete="current-password" required /></div>
+        <button class="btn" id="loginBtn" type="submit" style="width:100%">Sign in</button>
+      </form>
+      <div id="loginMessage" class="message"></div>
+      <p class="muted" style="margin-top:16px">Access is restricted to the configured administrator account.</p>
+    </section>
+
+    <section id="adminPanel" class="hidden">
+      <div class="toolbar">
+        <div><div class="eyebrow">Content administration</div><h2 class="section-title" style="margin:5px 0 0">Manage portfolio</h2></div>
+        <div class="tabs" role="tablist" aria-label="Content type">
+          <button class="tab active" data-collection="gallery" type="button">Gallery</button>
+          <button class="tab" data-collection="awards" type="button">Awards</button>
+          <button class="tab" data-collection="activities" type="button">Activities</button>
+        </div>
+      </div>
+      <div class="workspace">
+        <section class="panel form-card">
+          <h3 id="formHeading">Add gallery memory</h3>
+          <form id="recordForm">
+            <input id="recordId" type="hidden" />
+            <div class="field"><label for="title">Title *</label><input id="title" maxlength="120" required placeholder="e.g. Annual Science Exhibition" /></div>
+            <div class="two-col">
+              <div class="field"><label for="year">Year *</label><input id="year" type="number" min="1990" max="2100" required placeholder="2025" /></div>
+              <div class="field" id="categoryField"><label for="category">Category *</label><input id="category" maxlength="60" placeholder="Student Project" /></div>
+            </div>
+            <div class="field" id="dateField"><label for="date">Date</label><input id="date" placeholder="14 August 2025" /></div>
+            <div class="field" id="imageField"><label for="imageUrl">Image URL (HTTPS) *</label><input id="imageUrl" type="url" placeholder="https://..." /></div>
+            <div class="field"><label for="description" id="descriptionLabel">Description</label><textarea id="description" maxlength="1500" placeholder="Write a short description..."></textarea></div>
+            <label class="checkrow"><input id="published" type="checkbox" checked /> Publish on public website</label>
+            <div class="form-actions"><button class="btn" id="saveBtn" type="submit">Save record</button><button class="btn secondary hidden" id="cancelEditBtn" type="button">Cancel edit</button></div>
+          </form>
+          <div id="formMessage" class="message"></div>
+          <div class="hint">Images are currently added using a publicly accessible HTTPS image URL. Direct image upload is intentionally not enabled until an image-storage option is selected.</div>
+        </section>
+
+        <section class="panel list-card">
+          <div class="toolbar"><div><h3 id="listHeading">Gallery records</h3><p class="muted" id="recordCount">Loading records…</p></div><button class="btn secondary small" id="refreshBtn" type="button">Refresh</button></div>
+          <div id="recordList" class="record-list"><div class="empty">Loading…</div></div>
+        </section>
+      </div>
+    </section>
+  </main>
+  <div class="footer">Ms. Varsha Badwar · Teacher Portfolio Administration</div>
+  <script type="module" src="./admin.js"></script>
+</body>
+</html>
