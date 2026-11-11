@@ -19,7 +19,26 @@
 <div><label>Year *</label><input id="year" type="number" min="2000" max="2100" required value="2026"></div>
 <div id="categoryWrap"><label>Category *</label><select id="category"><option>Classroom Activity</option><option>Student Project</option><option>Sports</option><option>Cultural Event</option><option>Newspaper Coverage</option><option>Educational Trip</option><option>Memory</option><option>Other</option></select></div>
 <div id="dateWrap"><label>Date</label><input id="date" type="date"></div>
-<div id="imageWrap" class="full"><label>Photograph *</label><input id="imageFile" type="file" accept="image/jpeg,image/png,image/webp"><small class="muted">JPG, PNG or WebP; maximum 5 MB. For edits, select a new image only if you want to replace it.</small><img id="preview" class="hidden" alt="Selected image preview"></div>
+<div id="imageWrap" class="full">
+
+  <label>Photographs *</label>
+
+  <input
+    id="imageFile"
+    type="file"
+    accept="image/jpeg,image/png,image/webp"
+    multiple
+  >
+
+  <small class="muted">
+    Select multiple JPG, PNG or WebP photographs.
+    Maximum 5 MB per photograph.
+    Existing photographs will be retained when editing unless removed.
+  </small>
+
+  <div id="previewGrid"></div>
+
+</div>
 <div id="detailLabel" class="full"><label>Description *</label><textarea id="description" required maxlength="1500" placeholder="Describe the activity or achievement..."></textarea></div>
 <div id="publishedWrap" class="full"><label class="row" style="font-weight:500"><input id="published" type="checkbox" checked style="width:auto"> Publish on public website</label></div>
 </div><div class="row" style="margin-top:18px"><button id="saveBtn" type="submit">Upload & Save</button><button id="resetBtn" type="button" class="secondary">Clear form</button></div></form></div>
