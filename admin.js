@@ -22,7 +22,7 @@ import {
 const ADMIN_UID = 'Iv50JJ7KrNeREMftM70eqGmOWYJ3';
 
 // Replace with your actual deployed Cloudflare Worker URL
-const WORKER_URL = 'https://REPLACE-WITH-YOUR-WORKER.workers.dev';
+const WORKER_URL = 'https://varsha-portfolio-image-uploader.varshabadwar278.workers.dev';
 
 const $ = id => document.getElementById(id);
 
