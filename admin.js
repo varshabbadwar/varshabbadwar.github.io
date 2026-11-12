@@ -381,17 +381,93 @@ async function saveRecord(event) {
 // LOAD RECORDS
 // ========================================
 
+// async function loadRecords() {
+//   if (!currentUser) return;
+
+//   $('records').textContent = 'Loading...';
+
+//   try {
+//     const snapshot = await getDocs(
+//       query(
+//         collection(db, activeType),
+//         orderBy('createdAt', 'desc')
+//       )
+//     );
+
+//     $('records').innerHTML = '';
+
+//     if (snapshot.empty) {
+//       $('records').textContent = 'No records yet.';
+//       return;
+//     }
+
+//     snapshot.forEach(snapshotDoc => {
+//       const data = snapshotDoc.data();
+
+//       const item = document.createElement('div');
+//       item.className = 'item';
+
+//       const info = document.createElement('div');
+
+//       const title = document.createElement('strong');
+//       title.textContent = data.title || 'Untitled';
+
+//       const meta = document.createElement('small');
+
+//       const photos = data.imageUrls ||
+//         (data.imageUrl || data.image
+//           ? [data.imageUrl || data.image]
+//           : []);
+
+//       meta.textContent =
+//         `${data.year || ''} · ` +
+//         `${data.published ? 'Published' : 'Draft'} · ` +
+//         `${photos.length} photo(s)`;
+
+//       info.append(title, meta);
+
+//       const actions = document.createElement('div');
+//       actions.className = 'row';
+
+//       const edit = document.createElement('button');
+//       edit.className = 'secondary';
+//       edit.textContent = 'Edit';
+
+//       edit.onclick = () => {
+//         editRecord(snapshotDoc.id, data);
+//       };
+
+//       const remove = document.createElement('button');
+//       remove.className = 'danger';
+//       remove.textContent = 'Delete';
+
+//       remove.onclick = () => {
+//         removeRecord(snapshotDoc.id, data.title);
+//       };
+
+//       actions.append(edit, remove);
+
+//       item.append(info, actions);
+
+//       $('records').appendChild(item);
+//     });
+
+//   } catch (error) {
+//     console.error(error);
+
+//     $('records').textContent =
+//       'Could not load records: ' + error.message;
+//   }
+// }
 async function loadRecords() {
-  if (!currentUser) return;
+  if (!currentUser || currentUser.uid !== ADMIN_UID) return;
 
   $('records').textContent = 'Loading...';
 
   try {
+    // Fetch records without an orderBy query
     const snapshot = await getDocs(
-      query(
-        collection(db, activeType),
-        orderBy('createdAt', 'desc')
-      )
+      collection(db, activeType)
     );
 
     $('records').innerHTML = '';
@@ -401,7 +477,15 @@ async function loadRecords() {
       return;
     }
 
-    snapshot.forEach(snapshotDoc => {
+    // Sort records locally by creation date
+    const records = snapshot.docs.sort((a, b) => {
+      const dateA = a.data().createdAt?.toMillis?.() || 0;
+      const dateB = b.data().createdAt?.toMillis?.() || 0;
+
+      return dateB - dateA;
+    });
+
+    records.forEach(snapshotDoc => {
       const data = snapshotDoc.data();
 
       const item = document.createElement('div');
@@ -432,31 +516,24 @@ async function loadRecords() {
       const edit = document.createElement('button');
       edit.className = 'secondary';
       edit.textContent = 'Edit';
-
-      edit.onclick = () => {
-        editRecord(snapshotDoc.id, data);
-      };
+      edit.onclick = () => editRecord(snapshotDoc.id, data);
 
       const remove = document.createElement('button');
       remove.className = 'danger';
       remove.textContent = 'Delete';
-
-      remove.onclick = () => {
-        removeRecord(snapshotDoc.id, data.title);
-      };
+      remove.onclick = () => removeRecord(snapshotDoc.id, data.title);
 
       actions.append(edit, remove);
-
       item.append(info, actions);
 
       $('records').appendChild(item);
     });
 
   } catch (error) {
-    console.error(error);
+    console.error('Firestore loading error:', error);
 
     $('records').textContent =
-      'Could not load records: ' + error.message;
+      `Firestore error: ${error.code || 'unknown'} - ${error.message}`;
   }
 }
 
