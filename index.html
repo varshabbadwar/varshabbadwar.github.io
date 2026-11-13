@@ -407,6 +407,32 @@ section {
   color: var(--muted);
 }
 
+.award-images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.award-images img {
+  width: 100%;
+  max-width: 260px;
+  height: 190px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid #e5e0d6;
+  box-shadow: 0 5px 15px rgba(18, 50, 79, 0.10);
+  background: var(--cream);
+}
+
+@media (max-width: 600px) {
+  .award-images img {
+    max-width: 100%;
+    height: auto;
+    max-height: 260px;
+  }
+}
+
 .gallery-toolbar {
   display: flex;
   flex-direction: column;
@@ -1040,21 +1066,73 @@ function renderGallery() {
 function renderAwards() {
   const awardsList = document.getElementById("awardsList");
   awardsList.innerHTML = "";
+
   awards.forEach(award => {
     const timelineItem = document.createElement("div");
     timelineItem.className = "timeline-item";
+
     const year = document.createElement("div");
     year.className = "year";
     year.textContent = award.year || "";
+
     const title = document.createElement("h3");
     title.textContent = award.title || "";
+
     const detail = document.createElement("p");
     detail.textContent = award.detail || award.description || "";
+
     const card = document.createElement("div");
     card.className = "card timeline-card";
-    card.append(year, title, detail);
+
+    // Support both new and older image field names
+    let imageUrls = [];
+
+    if (Array.isArray(award.imageUrls)) {
+      imageUrls = award.imageUrls;
+    } else if (typeof award.imageUrls === "string" && award.imageUrls) {
+      imageUrls = [award.imageUrls];
+    } else if (award.imageUrl) {
+      imageUrls = [award.imageUrl];
+    } else if (award.image) {
+      imageUrls = [award.image];
+    }
+
+    // Create the award image gallery
+    if (imageUrls.length > 0) {
+      const imageContainer = document.createElement("div");
+      imageContainer.className = "award-images";
+
+      imageUrls.forEach((url, index) => {
+        if (!url || typeof url !== "string") return;
+
+        const img = document.createElement("img");
+        img.src = url;
+        img.alt = `${award.title || "Award"} - Photo ${index + 1}`;
+        img.loading = "lazy";
+
+        img.onerror = function() {
+          console.error("Award image failed to load:", url);
+          this.style.display = "none";
+        };
+
+        imageContainer.appendChild(img);
+      });
+
+      if (imageContainer.children.length > 0) {
+        card.appendChild(year);
+        card.appendChild(title);
+        card.appendChild(imageContainer);
+        card.appendChild(detail);
+      } else {
+        card.append(year, title, detail);
+      }
+    } else {
+      card.append(year, title, detail);
+    }
+
     const dot = document.createElement("div");
     dot.className = "timeline-dot";
+
     timelineItem.append(dot, card);
     awardsList.appendChild(timelineItem);
   });
