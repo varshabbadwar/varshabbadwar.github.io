@@ -43,6 +43,150 @@ function status(message, error = false) {
   $('status').classList.toggle('error', error);
 }
 
+
+// ========================================
+// POPUP TOAST NOTIFICATIONS
+// ========================================
+
+function showToast(message, type = 'success', duration = 4500) {
+  // Add popup styling once
+  if (!document.getElementById('toastStyles')) {
+    const style = document.createElement('style');
+    style.id = 'toastStyles';
+
+    style.textContent = `
+      #toastContainer {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 99999;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: min(380px, calc(100vw - 32px));
+        pointer-events: none;
+      }
+
+      .toast-message {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 16px;
+        border-radius: 12px;
+        background: #ffffff;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.18);
+        border-left: 5px solid #0f766e;
+        color: #12324f;
+        font-size: 14px;
+        animation: toastSlideIn 0.3s ease;
+        pointer-events: auto;
+      }
+
+      .toast-message.error {
+        border-left-color: #dc2626;
+      }
+
+      .toast-icon {
+        font-size: 21px;
+        font-weight: bold;
+      }
+
+      .toast-message.success .toast-icon {
+        color: #0f766e;
+      }
+
+      .toast-message.error .toast-icon {
+        color: #dc2626;
+      }
+
+      .toast-text {
+        flex: 1;
+        line-height: 1.5;
+        overflow-wrap: anywhere;
+      }
+
+      .toast-close {
+        border: none;
+        background: transparent;
+        color: #64748b;
+        cursor: pointer;
+        font-size: 20px;
+        padding: 0;
+        line-height: 1;
+      }
+
+      .toast-hide {
+        opacity: 0;
+        transform: translateX(30px);
+        transition: 0.3s ease;
+      }
+
+      @keyframes toastSlideIn {
+        from {
+          opacity: 0;
+          transform: translateX(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      @media (max-width: 600px) {
+        #toastContainer {
+          top: 12px;
+          right: 12px;
+          width: calc(100vw - 24px);
+        }
+      }
+    `;
+
+    document.head.appendChild(style);
+  }
+
+  // Create notification container
+  let container = document.getElementById('toastContainer');
+
+  if (!container) {
+    container = document.createElement('div');
+    container.id = 'toastContainer';
+    container.setAttribute('aria-live', 'polite');
+    document.body.appendChild(container);
+  }
+
+  // Create popup
+  const toast = document.createElement('div');
+  toast.className = `toast-message ${type}`;
+
+  const icon = document.createElement('span');
+  icon.className = 'toast-icon';
+  icon.textContent = type === 'success' ? '✓' : '✕';
+
+  const text = document.createElement('div');
+  text.className = 'toast-text';
+  text.textContent = message;
+
+  const close = document.createElement('button');
+  close.className = 'toast-close';
+  close.type = 'button';
+  close.textContent = '×';
+  close.setAttribute('aria-label', 'Close notification');
+
+  const dismiss = () => {
+    toast.classList.add('toast-hide');
+    setTimeout(() => toast.remove(), 300);
+  };
+
+  close.onclick = dismiss;
+
+  toast.append(icon, text, close);
+  container.appendChild(toast);
+
+  // Automatically hide popup
+  setTimeout(dismiss, duration);
+}
+
+
 function revokePreviewUrls() {
   previewObjectUrls.forEach(url => URL.revokeObjectURL(url));
   previewObjectUrls = [];
@@ -255,21 +399,6 @@ async function uploadImage(file) {
     })
   });
 
-  // const result = await response.json().catch(() => ({}));
-
-  // if (!response.ok) {
-  //   throw new Error(
-  //     result.error || `Upload failed for ${file.name}`
-  //   );
-  // }
-
-  // if (!result.imageUrl) {
-  //   throw new Error(
-  //     `Worker did not return an image URL for ${file.name}.`
-  //   );
-  // }
-
-  // return result.imageUrl;
   const responseText = await response.text();
 
   console.log('Worker HTTP Status:', response.status);
@@ -382,10 +511,20 @@ async function saveRecord(event) {
       );
     }
 
-    status(
+    const uploadedCount = selectedFiles.length;
+
+    const successMessage =
       activeType === 'gallery'
         ? 'Gallery entry saved successfully.'
-        : 'Award saved successfully.'
+        : 'Award saved successfully.';
+
+    status(successMessage);
+
+    showToast(
+      uploadedCount > 0
+        ? `${uploadedCount} photo(s) uploaded and record saved successfully!`
+        : successMessage,
+      'success'
     );
 
     resetForm();
@@ -395,10 +534,12 @@ async function saveRecord(event) {
   } catch (error) {
     console.error(error);
 
-    status(
-      error.message || 'Unable to save record.',
-      true
-    );
+    const errorMessage =
+      error.message || 'Unable to save record.';
+
+    status(errorMessage, true);
+
+    showToast(errorMessage, 'error', 6000);
 
   } finally {
     $('saveBtn').disabled = false;
@@ -410,84 +551,6 @@ async function saveRecord(event) {
 // LOAD RECORDS
 // ========================================
 
-// async function loadRecords() {
-//   if (!currentUser) return;
-
-//   $('records').textContent = 'Loading...';
-
-//   try {
-//     const snapshot = await getDocs(
-//       query(
-//         collection(db, activeType),
-//         orderBy('createdAt', 'desc')
-//       )
-//     );
-
-//     $('records').innerHTML = '';
-
-//     if (snapshot.empty) {
-//       $('records').textContent = 'No records yet.';
-//       return;
-//     }
-
-//     snapshot.forEach(snapshotDoc => {
-//       const data = snapshotDoc.data();
-
-//       const item = document.createElement('div');
-//       item.className = 'item';
-
-//       const info = document.createElement('div');
-
-//       const title = document.createElement('strong');
-//       title.textContent = data.title || 'Untitled';
-
-//       const meta = document.createElement('small');
-
-//       const photos = data.imageUrls ||
-//         (data.imageUrl || data.image
-//           ? [data.imageUrl || data.image]
-//           : []);
-
-//       meta.textContent =
-//         `${data.year || ''} · ` +
-//         `${data.published ? 'Published' : 'Draft'} · ` +
-//         `${photos.length} photo(s)`;
-
-//       info.append(title, meta);
-
-//       const actions = document.createElement('div');
-//       actions.className = 'row';
-
-//       const edit = document.createElement('button');
-//       edit.className = 'secondary';
-//       edit.textContent = 'Edit';
-
-//       edit.onclick = () => {
-//         editRecord(snapshotDoc.id, data);
-//       };
-
-//       const remove = document.createElement('button');
-//       remove.className = 'danger';
-//       remove.textContent = 'Delete';
-
-//       remove.onclick = () => {
-//         removeRecord(snapshotDoc.id, data.title);
-//       };
-
-//       actions.append(edit, remove);
-
-//       item.append(info, actions);
-
-//       $('records').appendChild(item);
-//     });
-
-//   } catch (error) {
-//     console.error(error);
-
-//     $('records').textContent =
-//       'Could not load records: ' + error.message;
-//   }
-// }
 async function loadRecords() {
   if (!currentUser || currentUser.uid !== ADMIN_UID) return;
 
