@@ -255,7 +255,36 @@ async function uploadImage(file) {
     })
   });
 
-  const result = await response.json().catch(() => ({}));
+  // const result = await response.json().catch(() => ({}));
+
+  // if (!response.ok) {
+  //   throw new Error(
+  //     result.error || `Upload failed for ${file.name}`
+  //   );
+  // }
+
+  // if (!result.imageUrl) {
+  //   throw new Error(
+  //     `Worker did not return an image URL for ${file.name}.`
+  //   );
+  // }
+
+  // return result.imageUrl;
+  const responseText = await response.text();
+
+  console.log('Worker HTTP Status:', response.status);
+  console.log('Worker Content-Type:', response.headers.get('content-type'));
+  console.log('Worker Response:', responseText);
+
+  let result;
+
+  try {
+    result = JSON.parse(responseText);
+  } catch (error) {
+    throw new Error(
+      `Worker returned a non-JSON response. HTTP ${response.status}: ${responseText.substring(0, 500)}`
+    );
+  }
 
   if (!response.ok) {
     throw new Error(
