@@ -407,7 +407,7 @@ section {
   color: var(--muted);
 }
 
-.award-images {
+/* .award-images {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
@@ -431,6 +431,40 @@ section {
     max-width: 100%;
     height: auto;
     max-height: 260px;
+  }
+} */
+ /* added */
+.award-images {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+  margin: 18px 0;
+}
+
+.award-images img {
+  width: 100%;
+  height: 220px;
+  object-fit: contain;
+  object-position: center;
+  background: #fbf7f0;
+  border-radius: 12px;
+  padding: 5px;
+  cursor: pointer;
+  transition: transform 0.25s ease;
+}
+
+.award-images img:hover {
+  transform: scale(1.02);
+}
+
+@media (max-width: 600px) {
+  .award-images {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .award-images img {
+    height: 160px;
   }
 }
 
@@ -1082,7 +1116,7 @@ function renderGallery() {
   });
 }
 
-function renderAwards() {
+/*function renderAwards() {
   const awardsList = document.getElementById("awardsList");
   awardsList.innerHTML = "";
 
@@ -1166,6 +1200,88 @@ window.setAwardsData = function(data) {
   awards = Array.isArray(data) ? data : [];
   renderAwards();
 };
+*/
+
+function renderAwards() {
+  const awardsList = document.getElementById("awardsList");
+  if (!awardsList) return;
+
+  awardsList.innerHTML = "";
+
+  awards.forEach(award => {
+    const timelineItem = document.createElement("div");
+    timelineItem.className = "timeline-item";
+
+    const dot = document.createElement("div");
+    dot.className = "timeline-dot";
+
+    const card = document.createElement("div");
+    card.className = "card timeline-card";
+
+    // Award year
+    const year = document.createElement("div");
+    year.className = "year";
+    year.textContent = award.year || "";
+
+    // Award title
+    const title = document.createElement("h3");
+    title.textContent = award.title || "";
+
+    // Award description
+    const detail = document.createElement("p");
+    detail.textContent = award.detail || award.description || "";
+
+    // Support multiple image field formats
+    let imageUrls = [];
+
+    if (Array.isArray(award.imageUrls)) {
+      imageUrls = award.imageUrls;
+    } else if (typeof award.imageUrls === "string" && award.imageUrls) {
+      imageUrls = [award.imageUrls];
+    } else if (award.imageUrl) {
+      imageUrls = [award.imageUrl];
+    } else if (award.image) {
+      imageUrls = [award.image];
+    }
+
+    // Remove empty and duplicate URLs
+    imageUrls = [...new Set(
+      imageUrls.filter(url => typeof url === "string" && url.trim())
+    )];
+
+    card.append(year, title);
+
+    // Award photographs
+    if (imageUrls.length > 0) {
+      const imageContainer = document.createElement("div");
+      imageContainer.className = "award-images";
+
+      imageUrls.forEach((url, index) => {
+        const img = document.createElement("img");
+
+        img.src = url;
+        img.alt = `${award.title || "Award"} - Photo ${index + 1}`;
+        img.loading = "lazy";
+
+        img.onerror = function() {
+          console.error("Award image failed to load:", url);
+          this.style.display = "none";
+        };
+
+        imageContainer.appendChild(img);
+      });
+
+      card.appendChild(imageContainer);
+    }
+
+    if (detail.textContent.trim()) {
+      card.appendChild(detail);
+    }
+
+    timelineItem.append(dot, card);
+    awardsList.appendChild(timelineItem);
+  });
+}
 
 function openLightbox(item) {
   currentItemId = item.title;
