@@ -1057,6 +1057,7 @@ let selectedCategory = "All";
 let searchQuery = "";
 let currentItemId = null;
 let lightboxMode = "gallery";
+let currentPhotoIndex = 0;
 
 function buildFilters() {
   const yearBox = document.getElementById("yearFilters");
@@ -1110,6 +1111,28 @@ function getVisibleItems() {
   });
 }
 
+function getItemImages(item) {
+  let urls = [];
+
+  if (Array.isArray(item.imageUrls)) {
+    urls = item.imageUrls;
+  } else if (typeof item.imageUrls === "string" && item.imageUrls) {
+    urls = [item.imageUrls];
+  }
+
+  if (urls.length === 0 && item.imageUrl) {
+    urls = [item.imageUrl];
+  }
+
+  if (urls.length === 0 && item.image) {
+    urls = [item.image];
+  }
+
+  return [...new Set(
+    urls.filter(url => typeof url === "string" && url.trim() !== "")
+  )];
+}
+
 function renderGallery() {
   const gallery = document.getElementById("galleryGrid");
   const emptyState = document.getElementById("emptyState");
@@ -1119,7 +1142,8 @@ function renderGallery() {
 
   const visibleItems = getVisibleItems();
 
-  countBox.textContent = `${visibleItems.length} item${visibleItems.length === 1 ? "" : "s"} found`;
+  countBox.textContent =
+    `${visibleItems.length} item${visibleItems.length === 1 ? "" : "s"} found`;
 
   if (visibleItems.length === 0) {
     emptyState.style.display = "block";
@@ -1135,18 +1159,21 @@ function renderGallery() {
     card.setAttribute("role", "button");
     card.setAttribute("aria-label", item.title);
 
-    card.onclick = () => openLightbox(item);
+    const images = getItemImages(item);
+    const coverImage = images[0] || "";
+
+    card.onclick = () => openLightbox(item, 0);
 
     card.onkeydown = event => {
       if (event.key === "Enter" || event.key === " ") {
         event.preventDefault();
-        openLightbox(item);
+        openLightbox(item, 0);
       }
     };
 
     card.innerHTML = `
       <div class="photo-frame">
-        <img src="${item.image}" alt="${item.title}" loading="lazy">
+        <img src="${coverImage}" alt="${item.title}" loading="lazy">
 
         <div class="photo-overlay">
           <div>
@@ -1160,6 +1187,9 @@ function renderGallery() {
         <span class="badge">${item.year} • ${item.category}</span>
         <h3>${item.title}</h3>
         <p>${item.date}</p>
+        ${images.length > 1
+          ? `<p>${images.length} photographs</p>`
+          : ""}
       </div>
     `;
 
@@ -1253,10 +1283,21 @@ function renderAwards() {
   });
 }
 window.setGalleryItems = function(data) {
-  items = Array.isArray(data) ? data : [];
+  items = Array.isArray(data) ? data.map(item => {
+    const images = getItemImages(item);
+
+    return {
+      ...item,
+      imageUrls: images,
+      image: images[0] || "",
+      date: item.date || String(item.year || "")
+    };
+  }) : [];
+
   buildFilters();
   renderGallery();
 };
+
 window.setAwardsData = function(data) {
   awards = Array.isArray(data) ? data : [];
   renderAwards();
@@ -1290,17 +1331,36 @@ function openAwardLightbox(award, imageUrl, index) {
 }
 
 
-function openLightbox(item) {
+function openLightbox(item, photoIndex = 0) {
   lightboxMode = "gallery";
   currentItemId = item.title;
 
-  document.getElementById("lightboxImage").src = item.image;
+  const images = getItemImages(item);
+
+  if (!images.length) return;
+
+  currentPhotoIndex = photoIndex;
+
+  document.getElementById("lightboxImage").src =
+    images[currentPhotoIndex];
+
+  document.getElementById("lightboxImage").alt = item.title;
+
   document.getElementById("lightboxTitle").textContent = item.title;
-  document.getElementById("lightboxCategory").textContent = item.category;
-  document.getElementById("lightboxMeta").textContent = `${item.year} • ${item.date}`;
-  document.getElementById("lightboxDescription").textContent = item.description || "";
-  // Show gallery navigation again
-  document.querySelector(".lightbox-nav").style.display = "flex";
+
+  document.getElementById("lightboxCategory").textContent =
+    item.category || "";
+
+  document.getElementById("lightboxMeta").textContent =
+    `${item.year} • ${item.date} • Photo ${currentPhotoIndex + 1} of ${images.length}`;
+
+  document.getElementById("lightboxDescription").textContent =
+    item.description || "";
+
+  document.querySelector(".lightbox-info").style.display = "block";
+  document.querySelector(".lightbox-nav").style.display =
+    images.length > 1 ? "flex" : "none";
+
   document.getElementById("lightbox").classList.add("open");
 }
 
@@ -1313,15 +1373,40 @@ function closeLightbox() {
 
 function changeItem(direction) {
   if (lightboxMode !== "gallery") return;
+
   const visibleItems = getVisibleItems();
-  const currentIndex = visibleItems.findIndex(item => item.title === currentItemId);
+
+  const currentIndex = visibleItems.findIndex(
+    item => item.title === currentItemId
+  );
 
   if (currentIndex === -1) return;
 
-  const nextIndex =
+  const currentItem = visibleItems[currentIndex];
+  const currentImages = getItemImages(currentItem);
+
+  const nextPhotoIndex = currentPhotoIndex + direction;
+
+  // Navigate within the current activity first
+  if (nextPhotoIndex >= 0 && nextPhotoIndex < currentImages.length) {
+    openLightbox(currentItem, nextPhotoIndex);
+    return;
+  }
+
+  // Move to the previous or next activity
+  const nextItemIndex =
     (currentIndex + direction + visibleItems.length) % visibleItems.length;
 
-  openLightbox(visibleItems[nextIndex]);
+  const nextItem = visibleItems[nextItemIndex];
+
+  const nextImages = getItemImages(nextItem);
+
+  if (nextImages.length > 0) {
+    openLightbox(
+      nextItem,
+      direction > 0 ? 0 : nextImages.length - 1
+    );
+  }
 }
 
 function previousItem() {
