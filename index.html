@@ -618,7 +618,14 @@ section {
   gap: 10px;
   padding: 14px;
 }
+/* Show a single photograph at full card width */
+.activity-photos.single-photo {
+  grid-template-columns: 1fr;
+}
 
+.activity-photos.single-photo .activity-photo-button {
+  aspect-ratio: 4 / 3;
+}
 .activity-photo-button {
   width: 100%;
   aspect-ratio: 4 / 3;
@@ -1213,7 +1220,9 @@ function renderGallery() {
 
     // All photographs belonging to this activity
     const imageContainer = document.createElement("div");
-    imageContainer.className = "activity-photos";
+    imageContainer.className = images.length === 1
+      ? "activity-photos single-photo"
+      : "activity-photos";
 
     images.forEach((url, index) => {
       const photoButton = document.createElement("button");
