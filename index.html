@@ -1053,6 +1053,7 @@ let selectedYear = "All";
 let selectedCategory = "All";
 let searchQuery = "";
 let currentItemId = null;
+let lightboxMode = "gallery";
 
 function buildFilters() {
   const yearBox = document.getElementById("yearFilters");
@@ -1223,6 +1224,11 @@ function renderAwards() {
         img.src = url;
         img.alt = `${award.title || "Award"} - Photo ${index + 1}`;
         img.loading = "lazy";
+        img.style.cursor = "zoom-in";
+
+        img.onclick = function() {
+          openAwardLightbox(award, url, index);
+        };
 
         img.onerror = function() {
           console.error("Award image failed to load:", url);
@@ -1253,23 +1259,57 @@ window.setAwardsData = function(data) {
   renderAwards();
 };
 
+
+function openAwardLightbox(award, imageUrl, index) {
+  lightboxMode = "award";
+  currentItemId = null;
+
+  document.getElementById("lightboxImage").src = imageUrl;
+  document.getElementById("lightboxImage").alt =
+    `${award.title || "Award"} - Photo ${index + 1}`;
+
+  document.getElementById("lightboxTitle").textContent =
+    award.title || "Award";
+
+  document.getElementById("lightboxCategory").textContent =
+    `Award Photograph ${index + 1}`;
+
+  document.getElementById("lightboxMeta").textContent =
+    award.year || "";
+
+  document.getElementById("lightboxDescription").textContent =
+    award.detail || award.description || "";
+
+  // Hide gallery navigation while viewing an award
+  document.querySelector(".lightbox-nav").style.display = "none";
+
+  document.getElementById("lightbox").classList.add("open");
+}
+
+
 function openLightbox(item) {
+  lightboxMode = "gallery";
   currentItemId = item.title;
 
   document.getElementById("lightboxImage").src = item.image;
   document.getElementById("lightboxTitle").textContent = item.title;
   document.getElementById("lightboxCategory").textContent = item.category;
   document.getElementById("lightboxMeta").textContent = `${item.year} • ${item.date}`;
-  document.getElementById("lightboxDescription").textContent = item.description;
+  document.getElementById("lightboxDescription").textContent = item.description || "";
+  // Show gallery navigation again
+  document.querySelector(".lightbox-nav").style.display = "flex";
   document.getElementById("lightbox").classList.add("open");
 }
+
 
 function closeLightbox() {
   document.getElementById("lightbox").classList.remove("open");
   currentItemId = null;
+  lightboxMode = "gallery";
 }
 
 function changeItem(direction) {
+  if (lightboxMode !== "gallery") return;
   const visibleItems = getVisibleItems();
   const currentIndex = visibleItems.findIndex(item => item.title === currentItemId);
 
