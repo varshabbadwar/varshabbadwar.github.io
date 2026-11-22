@@ -611,6 +611,59 @@ section {
   color: var(--muted);
   font-size: 0.88rem;
 }
+/* Multiple photographs inside one activity card */
+.activity-photos {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  padding: 14px;
+}
+
+.activity-photo-button {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--cream);
+  padding: 0;
+  cursor: zoom-in;
+}
+
+.activity-photo-button img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  transition: transform 0.25s ease;
+}
+
+.activity-photo-button:hover img {
+  transform: scale(1.04);
+}
+
+.activity-details {
+  padding: 4px 18px 20px;
+}
+
+.activity-details h3 {
+  color: var(--navy);
+  font-size: 1.05rem;
+  margin-bottom: 6px;
+}
+
+.activity-details p {
+  color: var(--muted);
+  font-size: 0.88rem;
+  margin-top: 5px;
+}
+
+@media (max-width: 480px) {
+  .activity-photos {
+    gap: 7px;
+    padding: 10px;
+  }
+}
 
 .badge {
   display: inline-block;
@@ -1153,46 +1206,73 @@ function renderGallery() {
   emptyState.style.display = "none";
 
   visibleItems.forEach(item => {
+    const images = getItemImages(item);
+
     const card = document.createElement("article");
     card.className = "photo-card";
-    card.tabIndex = 0;
-    card.setAttribute("role", "button");
-    card.setAttribute("aria-label", item.title);
 
-    const images = getItemImages(item);
-    const coverImage = images[0] || "";
+    // All photographs belonging to this activity
+    const imageContainer = document.createElement("div");
+    imageContainer.className = "activity-photos";
 
-    card.onclick = () => openLightbox(item, 0);
+    images.forEach((url, index) => {
+      const photoButton = document.createElement("button");
+      photoButton.type = "button";
+      photoButton.className = "activity-photo-button";
 
-    card.onkeydown = event => {
-      if (event.key === "Enter" || event.key === " ") {
-        event.preventDefault();
-        openLightbox(item, 0);
-      }
-    };
+      const img = document.createElement("img");
+      img.src = url;
+      img.alt = `${item.title} - Photo ${index + 1}`;
+      img.loading = "lazy";
 
-    card.innerHTML = `
-      <div class="photo-frame">
-        <img src="${coverImage}" alt="${item.title}" loading="lazy">
+      img.onerror = function() {
+        console.error("Gallery image failed to load:", url);
+        photoButton.style.display = "none";
+      };
 
-        <div class="photo-overlay">
-          <div>
-            <h3>${item.title}</h3>
-            <p>${item.date}</p>
-          </div>
-        </div>
-      </div>
+      photoButton.appendChild(img);
 
-      <div class="photo-details">
-        <span class="badge">${item.year} • ${item.category}</span>
-        <h3>${item.title}</h3>
-        <p>${item.date}</p>
-        ${images.length > 1
-          ? `<p>${images.length} photographs</p>`
-          : ""}
-      </div>
-    `;
+      // Open the selected photograph in lightbox
+      photoButton.onclick = () => {
+        openLightbox(item, index);
+      };
 
+      imageContainer.appendChild(photoButton);
+    });
+
+    card.appendChild(imageContainer);
+
+    // Activity details appear only once below all photographs
+    const details = document.createElement("div");
+    details.className = "activity-details";
+
+    const badge = document.createElement("span");
+    badge.className = "badge";
+    badge.textContent =
+      `${item.year || ""} • ${item.category || ""}`;
+
+    const title = document.createElement("h3");
+    title.textContent = item.title || "";
+
+    const date = document.createElement("p");
+    date.textContent = item.date || "";
+
+    const description = document.createElement("p");
+    description.textContent = item.description || "";
+
+    const photoCount = document.createElement("p");
+    photoCount.textContent =
+      images.length > 1 ? `${images.length} photographs` : "";
+
+    details.append(
+      badge,
+      title,
+      date,
+      description,
+      photoCount
+    );
+
+    card.appendChild(details);
     gallery.appendChild(card);
   });
 }
